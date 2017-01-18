@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Appmatic</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="connection_error">Error de conexión.</string>
+    <string name="connection_error_msg">Ha ocurrido un error de conexión.</string>
+    <string name="loading">Cargando…</string>
+    <string name="loading_msg">Obteniendo el contenido de la aplicación.</string>
+    <string name="loading_contact_msg">Obteniendo datos de contacto.</string>
+    <string name="retry">Reintentar</string>
+    <string name="exit">Salir</string>
+
+    <string name="contact">Contacto</string>
+    <string name="contact_phone">Teléfono</string>
+    <string name="contact_email">Email</string>
+    <string name="contact_website">Sitio web</string>
+    <string name="contact_name">Nombre</string>
+    <string name="snackbar_cache_text">Sin conexión, mostrando copia almacenada.</string>
+    <string name="restart_app_str">Reiniciar</string>
+    <string name="share_app">Compartir</string>
+    <string name="share_app_text">Descarga la app de %1$s creada con la tecnología de Nulltilus en https://play.google.com/store/apps/details?id=%2$s</string>
+    <string name="call_with">Llamar con…</string>
+    <string name="send_email_with">Enviar email con…</string>
+    <string name="open_website_with">Abrir sitio web con…</string>
+    <string name="open_location_with">Abrir localización con…</string>
+</resources>
