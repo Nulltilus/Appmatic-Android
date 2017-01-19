@@ -42,3 +42,4 @@ captures/
 **/google_dev_api_key.xml
 **/google-services.json
 
+.idea
