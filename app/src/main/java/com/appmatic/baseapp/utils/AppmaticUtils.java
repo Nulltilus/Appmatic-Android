@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.text.method.LinkMovementMethod;
@@ -23,7 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.appmatic.baseapp.R;
-import com.appmatic.baseapp.models.api_models.Content;
+import com.appmatic.baseapp.api.models.Content;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -35,32 +36,29 @@ import java.util.Arrays;
 /**
  * Appmatic
  * Copyright (C) 2016 - Nulltilus
- *
+ * <p>
  * This file is part of Appmatic.
- *
+ * <p>
  * Appmatic is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
+ * any later version.
+ * <p>
  * Appmatic is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 public class AppmaticUtils {
-
-    public static int getIconRes(String name, Context context) {
-        if (name.equals("ic_aano_icon_black")) // empty icon
-            return -1;
+    public static int getIconRes(String name, @NonNull Context context) {
         return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
     }
 
-    public static void openPlayStore(Context context, String packageName) {
+    public static void openPlayStore(@NonNull Context context, String packageName) {
         try {
             context.startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("market://details?id=" + packageName)));
@@ -70,7 +68,7 @@ public class AppmaticUtils {
         }
     }
 
-    public static View parseContent(final Context context, final Content content, boolean isFirstView, boolean isLastView) {
+    public static View parseContent(@NonNull final Context context, final Content content, boolean isFirstView, boolean isLastView) {
         View newView = null;
         String[] extras = content.getExtras().split(Content.EXTRA_DELIMITER);
 
@@ -81,7 +79,7 @@ public class AppmaticUtils {
             case Content.TYPE_SEPARATOR:
                 newView = new View(context);
                 newView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 1));
-                final TypedArray typedArray = context.obtainStyledAttributes(new int[] {android.R.attr.listDivider});
+                final TypedArray typedArray = context.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
                 DeprecationUtils.setBackgroundDrawable(newView, typedArray.getDrawable(0));
                 typedArray.recycle();
 

@@ -10,37 +10,35 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.appmatic.baseapp.R;
-import com.appmatic.baseapp.fragment.BaseFragment;
-import com.appmatic.baseapp.models.api_models.AppContent;
-import com.appmatic.baseapp.models.api_models.Content;
+import com.appmatic.baseapp.api.models.AppContent;
+import com.appmatic.baseapp.api.models.Content;
+import com.appmatic.baseapp.fragments.BaseFragment;
 import com.appmatic.baseapp.utils.AppmaticUtils;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Appmatic
  * Copyright (C) 2016 - Nulltilus
- *
+ * <p>
  * This file is part of Appmatic.
- *
+ * <p>
  * Appmatic is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
+ * any later version.
+ * <p>
  * Appmatic is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 public class ContentContainerFragment extends BaseFragment implements ContentContainerView {
-
     @BindView(R.id.content_container_layout)
     LinearLayout contentContainer;
     @BindView(R.id.content_scrollview)
@@ -51,16 +49,9 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_content_container, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        return super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_content_container);
     }
 
     @Override
@@ -90,6 +81,16 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void setupViews() {
+        // ignored
+    }
+
+    @Override
+    protected void setListeners() {
+        // ignored
     }
 
     @Override

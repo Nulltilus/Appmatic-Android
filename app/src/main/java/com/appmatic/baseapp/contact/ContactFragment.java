@@ -19,12 +19,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.appmatic.baseapp.R;
+import com.appmatic.baseapp.api.models.Contact;
 import com.appmatic.baseapp.contact.trianglify.ContactColorGenerator;
-import com.appmatic.baseapp.fragment.BaseFragment;
+import com.appmatic.baseapp.fragments.BaseFragment;
 import com.appmatic.baseapp.main.MainActivity;
-import com.appmatic.baseapp.models.api_models.Contact;
 import com.appmatic.baseapp.utils.AppmaticUtils;
-import com.appmatic.baseapp.utils.DeprecationUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,33 +38,31 @@ import com.manolovn.trianglify.TrianglifyView;
 import com.manolovn.trianglify.generator.point.RegularPointGenerator;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Appmatic
  * Copyright (C) 2016 - Nulltilus
- *
+ * <p>
  * This file is part of Appmatic.
- *
+ * <p>
  * Appmatic is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
+ * any later version.
+ * <p>
  * Appmatic is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 public class ContactFragment extends BaseFragment implements OnMapReadyCallback, ContactView {
-
+    private static final String MAP_VIEW_SAVE_STATE = "MAP_VIEW_SAVE_STATE";
     @BindView(R.id.contact_coordinator_layout)
     CoordinatorLayout contactCoordinatorLayout;
-
     @BindView(R.id.fab_fullscreen_map)
     FloatingActionButton fabFullscreenMap;
     @BindView(R.id.map_view)
@@ -80,10 +77,8 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     LinearLayout contactEmailLayout;
     @BindView(R.id.contact_website_layout)
     LinearLayout contactWebsiteLayout;
-
     @BindView(R.id.contact_bottomsheet)
     ScrollView contactBottomSheet;
-
     @BindView(R.id.contact_name_text)
     TextView contactNameText;
     @BindView(R.id.contact_address_text)
@@ -94,7 +89,6 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     TextView contactEmailText;
     @BindView(R.id.contact_website_text)
     TextView contactWebsiteText;
-
     @BindView(R.id.name_phone_divider)
     View namePhoneDivider;
     @BindView(R.id.phone_email_divider)
@@ -103,10 +97,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     View emailWebsiteDivider;
     @BindView(R.id.website_end_divider)
     View websiteEndDivider;
-
     private GoogleMap googleMap;
-    private static final String MAP_VIEW_SAVE_STATE = "MAP_VIEW_SAVE_STATE";
-
     private ContactPresenter contactPresenter;
     private Contact contact;
 
@@ -117,16 +108,15 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_contact, container, false);
-        ButterKnife.bind(this, view);
+        final View view = super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_contact);
+        final Bundle mapViewSavedInstanceState =
+                savedInstanceState != null ? savedInstanceState.getBundle(MAP_VIEW_SAVE_STATE) : null;
+        this.mapView.onCreate(mapViewSavedInstanceState);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        setUpViews(savedInstanceState);
-        setListeners();
         this.mapView.getMapAsync(this);
     }
 
@@ -265,7 +255,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void setListeners() {
+    protected void setListeners() {
         this.fabFullscreenMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,8 +284,8 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
             }
         });
 
-        BottomSheetBehavior.from(this.contactBottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
         final BottomSheetBehavior behavior = BottomSheetBehavior.from(this.contactBottomSheet);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -333,12 +323,8 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void setUpViews(Bundle savedInstanceState) {
-        final Bundle mapViewSavedInstanceState =
-                savedInstanceState != null ? savedInstanceState.getBundle(MAP_VIEW_SAVE_STATE) : null;
-        this.mapView.onCreate(mapViewSavedInstanceState);
+    protected void setupViews() {
         this.contactPresenter = new ContactPresenterImpl(this);
-
         setBottomSheetState(getResources().getConfiguration().orientation);
     }
 

@@ -1,6 +1,8 @@
-package com.appmatic.baseapp.models.api;
+package com.appmatic.baseapp.api;
 
-import com.appmatic.baseapp.BaseApplication;
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.appmatic.baseapp.utils.Constants;
 import com.appmatic.baseapp.utils.InternetUtils;
 
@@ -20,41 +22,48 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Appmatic
  * Copyright (C) 2016 - Nulltilus
- *
+ * <p>
  * This file is part of Appmatic.
- *
+ * <p>
  * Appmatic is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
+ * any later version.
+ * <p>
  * Appmatic is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 public class WebService {
-
-    private Retrofit retrofit;
     private static final String CACHE_CONTROL = "Cache-Control";
+    private Retrofit retrofit;
 
-    private static OkHttpClient provideOkHttpClient() {
+    public WebService(@NonNull Context context) {
+        this.retrofit = new Retrofit.Builder()
+                .client(provideOkHttpClient(context))
+                .baseUrl(Constants.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    private static OkHttpClient provideOkHttpClient(@NonNull Context context) {
         return new OkHttpClient.Builder()
-                .addInterceptor(provideOfflineCacheInterceptor())
+                .addInterceptor(provideOfflineCacheInterceptor(context))
                 .addNetworkInterceptor(provideCacheInterceptor())
-                .cache(provideCache())
+                .cache(provideCache(context))
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .build();
     }
 
-    private static Cache provideCache() {
+    private static Cache provideCache(@NonNull Context context) {
         Cache cache = null;
         try {
-            cache = new Cache(new File(BaseApplication.getAppContext().getCacheDir(), "http-cache"),
+            cache = new Cache(new File(context.getCacheDir(), "http-cache"),
                     10 * 1024 * 1024); // 10 MB
         } catch (Exception ignored) {
         }
@@ -78,13 +87,13 @@ public class WebService {
         };
     }
 
-    private static Interceptor provideOfflineCacheInterceptor() {
+    private static Interceptor provideOfflineCacheInterceptor(@NonNull final Context context) {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
 
-                if (!InternetUtils.isInternetAvailable()) {
+                if (!InternetUtils.isInternetAvailable(context)) {
                     CacheControl cacheControl = new CacheControl.Builder()
                             .maxStale(180, TimeUnit.DAYS)
                             .build();
@@ -97,14 +106,6 @@ public class WebService {
                 return chain.proceed(request);
             }
         };
-    }
-
-    public WebService() {
-        this.retrofit = new Retrofit.Builder()
-                .client(provideOkHttpClient())
-                .baseUrl(Constants.API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
     }
 
     public ApiInterface getApiInterface() {

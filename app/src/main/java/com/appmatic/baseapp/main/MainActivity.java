@@ -1,8 +1,6 @@
 package com.appmatic.baseapp.main;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -18,60 +16,55 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appmatic.baseapp.R;
+import com.appmatic.baseapp.activities.BaseActivity;
+import com.appmatic.baseapp.api.models.AppContent;
+import com.appmatic.baseapp.api.models.ExtraInfo;
 import com.appmatic.baseapp.contact.ContactFragment;
+import com.appmatic.baseapp.contact.trianglify.ContactColorGenerator;
 import com.appmatic.baseapp.content_container.ContentContainerFragment;
 import com.appmatic.baseapp.fcm.FCMHelper;
-import com.appmatic.baseapp.fragment.BaseFragment;
-import com.appmatic.baseapp.models.api_models.AppContent;
-import com.appmatic.baseapp.models.api_models.ExtraInfo;
+import com.appmatic.baseapp.fragments.BaseFragment;
 import com.appmatic.baseapp.utils.AppmaticUtils;
 import com.appmatic.baseapp.utils.Constants;
-import com.appmatic.baseapp.utils.DeprecationUtils;
 import com.appmatic.baseapp.utils.InternetUtils;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Appmatic
  * Copyright (C) 2016 - Nulltilus
- *
+ * <p>
  * This file is part of Appmatic.
- *
+ * <p>
  * Appmatic is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
+ * any later version.
+ * <p>
  * Appmatic is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainView, BaseFragment.OnFragmentReadyListener {
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.drawer_layout)
@@ -94,13 +87,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_NoActionBar);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState, R.layout.activity_main);
 
         FCMHelper.subscribeToFCMTopic(this);
-        setUpViews();
-        setListeners();
 
         this.mainPresenter.populateApp();
 
@@ -189,7 +178,7 @@ public class MainActivity extends AppCompatActivity
     public void updateAllContent(ArrayList<AppContent> items) {
         this.items = items;
 
-        if (!InternetUtils.isInternetAvailable())
+        if (!InternetUtils.isInternetAvailable(this))
             Snackbar.make(findViewById(R.id.main_coordinator_layout), R.string.snackbar_cache_text,
                     Snackbar.LENGTH_LONG).show();
 
@@ -237,6 +226,7 @@ public class MainActivity extends AppCompatActivity
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
                 extraInfo.isNavigation_bar_colored())
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+
         ((TextView) this.headerView.findViewById(R.id.tv_nav_main)).setText(extraInfo.getAndroid_drawer_header_main_text());
         ((TextView) this.headerView.findViewById(R.id.tv_nav_sub)).setText(extraInfo.getAndroid_drawer_header_sub_text());
         this.headerView.findViewById(R.id.navigation_header_layout).setBackgroundColor(Color.parseColor(extraInfo.getAndroid_drawer_header_color()));
@@ -267,6 +257,7 @@ public class MainActivity extends AppCompatActivity
                 addFragment(this.contentContainerFragment);
                 this.contentContainerFragment.updateFragmentContents(this.currentItem);
             } else if (extraItems.contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
+                ContactColorGenerator.initColors(this);
                 this.currentFragmentTag = ContentContainerFragment.class.toString();
                 addFragment(this.contactFragment);
                 showProgress(getString(R.string.loading), getString(R.string.loading_contact_msg));
@@ -286,39 +277,10 @@ public class MainActivity extends AppCompatActivity
                 .commitNowAllowingStateLoss();
     }
 
-    @Override
-    public void setListeners() {
-        this.navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    public void setUpViews() {
-        this.contentContainerFragment = ContentContainerFragment.newInstance();
-
-        ButterKnife.bind(this);
-
-        this.mainPresenter = new MainPresenterImpl(this);
-
-        setSupportActionBar(this.toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, this.drawer, this.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, 0); // this disables the hamburger to arrow animation
-            }
-
-        };
-
-        this.drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        this.currentNavigationViewMenu = this.navigationView.getMenu();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
         ((ShareActionProvider) MenuItemCompat.getActionProvider(menu.findItem(R.id.menu_share_app)))
                 .setShareIntent(getShareIntent());
 
@@ -358,5 +320,32 @@ public class MainActivity extends AppCompatActivity
         if (this.drawer.isDrawerOpen(GravityCompat.START)) {
             this.drawer.closeDrawer(GravityCompat.START);
         }
+    }
+
+    @Override
+    protected void setListeners() {
+        this.navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void setupViews() {
+        this.contentContainerFragment = ContentContainerFragment.newInstance();
+
+        this.mainPresenter = new MainPresenterImpl(this);
+
+        setSupportActionBar(this.toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, this.drawer, this.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, 0); // this disables the hamburger to arrow animation
+            }
+
+        };
+
+        this.drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        this.currentNavigationViewMenu = this.navigationView.getMenu();
     }
 }

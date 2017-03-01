@@ -1,6 +1,11 @@
-package com.appmatic.baseapp.content_container;
+package com.appmatic.baseapp.activities;
 
-import com.appmatic.baseapp.api.models.AppContent;
+import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+
+import butterknife.ButterKnife;
 
 /**
  * Appmatic
@@ -22,9 +27,17 @@ import com.appmatic.baseapp.api.models.AppContent;
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface ContentContainerView {
-    void updateFragmentContents(AppContent fragmentContents);
+public abstract class BaseActivity extends AppCompatActivity {
+    protected void onCreate(@Nullable Bundle savedInstanceState, @LayoutRes int contentViewId) {
+        super.onCreate(savedInstanceState);
+        setContentView(contentViewId);
+        ButterKnife.bind(this);
 
-    void clearFragmentContents();
+        setupViews();
+        setListeners();
+    }
 
+    protected abstract void setupViews();
+
+    protected abstract void setListeners();
 }
