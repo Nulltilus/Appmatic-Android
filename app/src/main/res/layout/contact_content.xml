@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_bottomsheet"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    tools:showIn="@layout/fragment_contact"
-    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="80dp">
+    app:behavior_peekHeight="80dp"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    tools:showIn="@layout/fragment_contact">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,53 +19,53 @@
 
         <LinearLayout
             android:id="@+id/contact_name_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_marginTop="@dimen/half_default_margin"
             android:layout_marginBottom="@dimen/half_default_margin"
-            android:focusable="true"
-            android:clickable="true"
+            android:layout_marginTop="@dimen/half_default_margin"
             android:background="?attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
-                android:src="@drawable/ic_info_black_48dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_gravity="center_vertical"
-                android:alpha="0.6"
                 android:layout_width="32dp"
-                android:layout_height="32dp" />
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:alpha="0.6"
+                android:src="@drawable/ic_info_black_48dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/contact_name_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/contact_address_text"
-                    android:text="@string/contact_name"
-                    android:alpha="0.5"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/mainTextColor"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:alpha="0.5"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/contact_name"
+                    android:textColor="@color/mainTextColor" />
 
             </LinearLayout>
 
@@ -73,57 +73,57 @@
 
         <View
             android:id="@+id/name_phone_divider"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/default_margin"
+            style="@style/Divider"
             android:layout_marginLeft="64dp"
-            style="@style/Divider"/>
+            android:layout_marginStart="@dimen/default_margin"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/contact_phone_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_marginTop="@dimen/half_default_margin"
             android:layout_marginBottom="@dimen/half_default_margin"
-            android:focusable="true"
-            android:clickable="true"
+            android:layout_marginTop="@dimen/half_default_margin"
             android:background="?attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
-                android:src="@drawable/ic_call_black_48dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_gravity="center_vertical"
-                android:alpha="0.6"
                 android:layout_width="32dp"
-                android:layout_height="32dp" />
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:alpha="0.6"
+                android:src="@drawable/ic_call_black_48dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/contact_phone_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:text="@string/contact_phone"
-                    android:alpha="0.5"
-                    android:textColor="@color/mainTextColor"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:alpha="0.5"
+                    android:text="@string/contact_phone"
+                    android:textColor="@color/mainTextColor" />
 
             </LinearLayout>
 
@@ -131,57 +131,57 @@
 
         <View
             android:id="@+id/phone_email_divider"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/default_margin"
+            style="@style/Divider"
             android:layout_marginLeft="64dp"
-            style="@style/Divider"/>
+            android:layout_marginStart="@dimen/default_margin"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/contact_email_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_marginTop="@dimen/half_default_margin"
             android:layout_marginBottom="@dimen/half_default_margin"
-            android:focusable="true"
-            android:clickable="true"
+            android:layout_marginTop="@dimen/half_default_margin"
             android:background="?attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
-                android:src="@drawable/ic_email_black_48dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_gravity="center_vertical"
-                android:alpha="0.6"
                 android:layout_width="32dp"
-                android:layout_height="32dp" />
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:alpha="0.6"
+                android:src="@drawable/ic_email_black_48dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/contact_email_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:text="@string/contact_email"
-                    android:alpha="0.5"
-                    android:textColor="@color/mainTextColor"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:alpha="0.5"
+                    android:text="@string/contact_email"
+                    android:textColor="@color/mainTextColor" />
 
             </LinearLayout>
 
@@ -189,57 +189,57 @@
 
         <View
             android:id="@+id/email_website_divider"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/default_margin"
+            style="@style/Divider"
             android:layout_marginLeft="64dp"
-            style="@style/Divider"/>
+            android:layout_marginStart="@dimen/default_margin"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/contact_website_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_marginTop="@dimen/half_default_margin"
             android:layout_marginBottom="@dimen/half_default_margin"
-            android:focusable="true"
-            android:clickable="true"
+            android:layout_marginTop="@dimen/half_default_margin"
             android:background="?attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
-                android:src="@drawable/ic_language_black_48dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_gravity="center_vertical"
-                android:alpha="0.6"
                 android:layout_width="32dp"
-                android:layout_height="32dp" />
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:alpha="0.6"
+                android:src="@drawable/ic_language_black_48dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/contact_website_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:text="@string/contact_website"
-                    android:alpha="0.5"
-                    android:textColor="@color/mainTextColor"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:alpha="0.5"
+                    android:text="@string/contact_website"
+                    android:textColor="@color/mainTextColor" />
 
             </LinearLayout>
 
@@ -247,9 +247,9 @@
 
         <View
             android:id="@+id/website_end_divider"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/default_margin"
+            style="@style/Divider"
             android:layout_marginLeft="64dp"
-            style="@style/Divider"/>
+            android:layout_marginStart="@dimen/default_margin"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

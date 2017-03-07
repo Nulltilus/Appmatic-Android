@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_coordinator_layout"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.appmatic.baseapp.contact.ContactFragment"
-    android:gravity="center_horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.appmatic.baseapp.contact.ContactFragment">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map_view"
-        android:visibility="gone"
-        android:layout_marginBottom="80dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
+        android:visibility="gone" />
 
     <com.manolovn.trianglify.TrianglifyView
         android:id="@+id/contact_trianglify_view"
-        android:visibility="gone"
-        android:layout_marginBottom="64dp"
-        app:cellSize="175"
-        app:variance="75"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        app:cellSize="175"
+        app:variance="75" />
 
-    <include
-        layout="@layout/contact_content" />
+    <include layout="@layout/contact_content" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_fullscreen_map"
-        android:visibility="gone"
-        android:src="@drawable/ic_fullscreen_white_48dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_fullscreen_white_48dp"
+        android:visibility="gone"
         app:layout_anchor="@id/contact_bottomsheet"
         app:layout_anchorGravity="top|right" />
 

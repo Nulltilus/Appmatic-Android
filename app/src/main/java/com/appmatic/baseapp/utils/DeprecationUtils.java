@@ -3,7 +3,6 @@ package com.appmatic.baseapp.utils;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.text.Spanned;
 import android.view.View;
 
 /**
@@ -28,13 +27,6 @@ import android.view.View;
 
 @SuppressWarnings("deprecation")
 public class DeprecationUtils {
-    public static Spanned fromHtml(String html) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
-            return android.text.Html.fromHtml(html, android.text.Html.FROM_HTML_MODE_LEGACY);
-        else
-            return android.text.Html.fromHtml(html);
-    }
-
     public static void setBackgroundDrawable(@NonNull View view, Drawable drawable) {
         if (drawable == null) return;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)

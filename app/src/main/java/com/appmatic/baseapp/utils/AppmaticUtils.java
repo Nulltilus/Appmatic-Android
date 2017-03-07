@@ -30,6 +30,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.pixplicity.htmlcompat.HtmlCompat;
 
 import java.util.Arrays;
 
@@ -93,7 +94,7 @@ public class AppmaticUtils {
                 break;
             case Content.TYPE_TEXT:
                 newView = new TextView(context);
-                ((TextView) newView).setText(DeprecationUtils.fromHtml(content.getContent().replace("\n", "<br><br>").replace("</p>", "").replace("<p>", "")));
+                ((TextView) newView).setText(HtmlCompat.fromHtml(context, content.getContent().replace("\n", "<br><br>").replace("</p>", "").replace("<p>", ""), 0));
                 ((TextView) newView).setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
                 ((TextView) newView).setTextColor(ContextCompat.getColor(context, R.color.mainTextColor));
                 ((TextView) newView).setAutoLinkMask(Linkify.ALL);

@@ -24,6 +24,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:support-v13:25.2.0'
     compile 'com.android.support:design:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
@@ -37,6 +38,7 @@ dependencies {
     compile 'com.jakewharton:process-phoenix:1.1.0'
     compile 'com.manolovn:trianglify:1.1.0'
     compile 'com.afollestad.material-dialogs:core:0.9.3.0'
+    compile 'com.pixplicity.htmlcompat:library:1.0.0'
     compile files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
