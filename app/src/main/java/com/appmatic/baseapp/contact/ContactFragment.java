@@ -11,6 +11,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -248,7 +249,8 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
         if (!contact.getContact_website().isEmpty()) {
             contactWebsiteLayout.setVisibility(View.VISIBLE);
             websiteEndDivider.setVisibility(View.VISIBLE);
-            this.contactWebsiteText.setText(contact.getContact_website());
+            // There is a bug with "http(s)://" and ellipsize, we need to remove it.
+            this.contactWebsiteText.setText(contact.getContact_website().replaceFirst("(http(s)?://)?(www.)?", ""));
         }
 
         ((MainActivity) getActivity()).hideProgress();

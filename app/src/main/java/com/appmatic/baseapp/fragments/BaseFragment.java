@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Appmatic
@@ -33,12 +34,13 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
     protected OnFragmentReadyListener onFragmentReadyListener;
+    private Unbinder unbinder;
 
     @Nullable
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState, @LayoutRes int contentViewId) {
         View view = inflater.inflate(contentViewId, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         setupViews();
         setListeners();
@@ -63,6 +65,12 @@ public abstract class BaseFragment extends Fragment {
     public void onDetach() {
         this.onFragmentReadyListener = null;
         super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     protected abstract void setupViews();
