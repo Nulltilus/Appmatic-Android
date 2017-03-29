@@ -30,7 +30,6 @@ import com.appmatic.baseapp.activities.BaseActivity;
 import com.appmatic.baseapp.api.models.AppContent;
 import com.appmatic.baseapp.api.models.ExtraInfo;
 import com.appmatic.baseapp.contact.ContactFragment;
-import com.appmatic.baseapp.contact.trianglify.ContactColorGenerator;
 import com.appmatic.baseapp.content_container.ContentContainerFragment;
 import com.appmatic.baseapp.fcm.FCMHelper;
 import com.appmatic.baseapp.fragments.BaseFragment;
@@ -257,7 +256,6 @@ public class MainActivity extends BaseActivity
                 addFragment(this.contentContainerFragment);
                 this.contentContainerFragment.updateFragmentContents(this.currentItem);
             } else if (extraItems.contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
-                ContactColorGenerator.initColors(this);
                 this.currentFragmentTag = ContentContainerFragment.class.toString();
                 addFragment(this.contactFragment);
                 showProgress(getString(R.string.loading), getString(R.string.loading_contact_msg));

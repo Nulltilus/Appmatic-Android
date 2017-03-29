@@ -11,17 +11,16 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.appmatic.baseapp.R;
 import com.appmatic.baseapp.api.models.Contact;
-import com.appmatic.baseapp.contact.trianglify.ContactColorGenerator;
 import com.appmatic.baseapp.fragments.BaseFragment;
 import com.appmatic.baseapp.main.MainActivity;
 import com.appmatic.baseapp.utils.AppmaticUtils;
@@ -35,8 +34,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.manolovn.trianglify.TrianglifyView;
-import com.manolovn.trianglify.generator.point.RegularPointGenerator;
 
 import butterknife.BindView;
 
@@ -68,8 +65,8 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     FloatingActionButton fabFullscreenMap;
     @BindView(R.id.map_view)
     MapView mapView;
-    @BindView(R.id.contact_trianglify_view)
-    TrianglifyView contactTrianglifyView;
+    @BindView(R.id.contact_placeholder_image)
+    ImageView contactPlaceholderImage;
     @BindView(R.id.contact_name_layout)
     LinearLayout contactNameLayout;
     @BindView(R.id.contact_phone_layout)
@@ -112,13 +109,15 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
         final View view = super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_contact);
         final Bundle mapViewSavedInstanceState =
                 savedInstanceState != null ? savedInstanceState.getBundle(MAP_VIEW_SAVE_STATE) : null;
-        this.mapView.onCreate(mapViewSavedInstanceState);
+        if (mapView != null)
+            this.mapView.onCreate(mapViewSavedInstanceState);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        this.mapView.getMapAsync(this);
+        if (mapView != null)
+            this.mapView.getMapAsync(this);
     }
 
     @Override
@@ -216,18 +215,10 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
                 }
             });
         } else {
-            this.contactTrianglifyView.getDrawable().setColorGenerator(new ContactColorGenerator());
-            this.contactTrianglifyView.getDrawable().setPointGenerator(new RegularPointGenerator());
-            this.contactTrianglifyView.setVisibility(View.VISIBLE);
+            this.contactPlaceholderImage.setVisibility(View.VISIBLE);
             this.contactNameLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
             this.contactNameLayout.setFocusable(false);
             this.contactNameLayout.setClickable(false);
-            this.contactTrianglifyView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    collapseBottomSheet();
-                }
-            });
         }
 
         contactNameLayout.setVisibility(View.VISIBLE);
@@ -318,7 +309,8 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     public void onSaveInstanceState(Bundle outState) {
         //This MUST be done before saving any of your own or your base class's variables
         final Bundle mapViewSaveState = new Bundle(outState);
-        this.mapView.onSaveInstanceState(mapViewSaveState);
+        if (mapView != null)
+            this.mapView.onSaveInstanceState(mapViewSaveState);
         outState.putBundle(MAP_VIEW_SAVE_STATE, mapViewSaveState);
         //Add any other variables here.
         super.onSaveInstanceState(outState);
@@ -375,24 +367,28 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     public void onDestroy() {
         super.onDestroy();
         this.contactPresenter.onDestroy();
-        this.mapView.onDestroy();
+        if (mapView != null)
+            this.mapView.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.mapView.onResume();
+        if (mapView != null)
+            this.mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.mapView.onPause();
+        if (mapView != null)
+            this.mapView.onPause();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        this.mapView.onLowMemory();
+        if (mapView != null)
+            this.mapView.onLowMemory();
     }
 }

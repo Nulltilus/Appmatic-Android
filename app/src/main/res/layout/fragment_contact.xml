@@ -16,14 +16,15 @@
         android:layout_marginBottom="80dp"
         android:visibility="gone" />
 
-    <com.manolovn.trianglify.TrianglifyView
-        android:id="@+id/contact_trianglify_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="64dp"
+    <ImageView
+        android:id="@+id/contact_placeholder_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:visibility="gone"
-        app:cellSize="175"
-        app:variance="75" />
+        android:background="@drawable/ic_account_circle_black_48dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="64dp"
+        android:alpha="0.2"/>
 
     <include layout="@layout/contact_content" />
 
