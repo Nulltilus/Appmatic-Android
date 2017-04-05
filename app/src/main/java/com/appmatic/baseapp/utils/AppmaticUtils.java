@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -94,11 +93,10 @@ public class AppmaticUtils {
                 break;
             case Content.TYPE_TEXT:
                 newView = new TextView(context);
+                ((TextView) newView).setMovementMethod(LinkMovementMethod.getInstance());
                 ((TextView) newView).setText(HtmlCompat.fromHtml(context, content.getContent().replace("\n", "<br><br>").replace("</p>", "").replace("<p>", ""), 0));
                 ((TextView) newView).setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
                 ((TextView) newView).setTextColor(ContextCompat.getColor(context, R.color.mainTextColor));
-                ((TextView) newView).setAutoLinkMask(Linkify.ALL);
-                ((TextView) newView).setMovementMethod(LinkMovementMethod.getInstance());
                 newView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
                 if (isFirstView)

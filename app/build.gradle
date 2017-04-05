@@ -8,8 +8,8 @@ android {
         applicationId "com.appmatic.baseapp"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 923
-        versionName "0.9.2.3"
+        versionCode 924
+        versionName "0.9.2.4"
     }
 
     buildTypes {
