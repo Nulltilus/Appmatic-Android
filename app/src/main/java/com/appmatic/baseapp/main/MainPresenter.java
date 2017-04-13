@@ -22,11 +22,7 @@ package com.appmatic.baseapp.main;
 
 interface MainPresenter {
     void setUpDataFromServer();
-
     void onDestroy();
-
     void populateApp();
-
     void getExtraItems();
-
 }

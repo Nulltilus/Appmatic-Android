@@ -30,18 +30,15 @@ import java.util.ArrayList;
 
 interface MainInteractor {
     void getData(@NonNull Context context, OnDataRetrievedListener dataListener);
-
     void getExtraInfo(@NonNull Context context, OnExtraInfoListener extraItemsListener);
 
     interface OnDataRetrievedListener {
         void onDataReceived(ArrayList<AppContent> appContents);
-
         void onDataReceivedError();
     }
 
     interface OnExtraInfoListener {
         void onExtraInfoReceived(ExtraInfo extraInfo);
-
         void onExtraInfoError();
     }
 
