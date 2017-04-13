@@ -48,4 +48,9 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     public void setupImages(ArrayList<GalleryGroup.Image> images) {
 
     }
+
+    @Override
+    public void setImageError() {
+
+    }
 }

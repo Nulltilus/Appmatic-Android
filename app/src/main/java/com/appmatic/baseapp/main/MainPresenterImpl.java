@@ -72,7 +72,7 @@ class MainPresenterImpl implements MainPresenter, MainInteractorImpl.OnDataRetri
     @Override
     public void onDataReceivedError() {
         if (this.mainView != null) {
-            this.mainView.handleInternetError(null);
+            this.mainView.handleInternetError();
         }
     }
 
@@ -86,7 +86,7 @@ class MainPresenterImpl implements MainPresenter, MainInteractorImpl.OnDataRetri
     @Override
     public void onExtraInfoError() {
         if (this.mainView != null) {
-            this.mainView.handleInternetError(null);
+            this.mainView.handleInternetError();
         }
     }
 

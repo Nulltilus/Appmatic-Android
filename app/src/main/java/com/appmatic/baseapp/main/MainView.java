@@ -31,7 +31,7 @@ import java.util.ArrayList;
 interface MainView {
     void showProgress(String title, String message);
     void hideProgress();
-    void handleInternetError(@Nullable final Fragment from);
+    void handleInternetError();
     void updateAllContent(ArrayList<AppContent> appContents);
     void handleFirstContentState(ArrayList<String> extraItems);
     void setUpRemainingContent(ExtraInfo extraInfo);

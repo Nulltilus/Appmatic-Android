@@ -360,7 +360,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     @Override
     public void showErrorDialog() {
-        ((MainActivity) getActivity()).handleInternetError(this);
+        //((MainActivity) getActivity()).handleInternetError(this);
     }
 
     @Override

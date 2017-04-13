@@ -33,6 +33,7 @@ import com.appmatic.baseapp.contact.ContactFragment;
 import com.appmatic.baseapp.content_container.ContentContainerFragment;
 import com.appmatic.baseapp.fcm.FCMHelper;
 import com.appmatic.baseapp.fragments.BaseFragment;
+import com.appmatic.baseapp.gallery.GalleryFragment;
 import com.appmatic.baseapp.utils.AppmaticUtils;
 import com.appmatic.baseapp.utils.Constants;
 import com.appmatic.baseapp.utils.InternetUtils;
@@ -78,11 +79,11 @@ public class MainActivity extends BaseActivity
     private ContentContainerFragment contentContainerFragment;
     private ArrayList<AppContent> items;
     private Menu currentNavigationViewMenu;
-    private ContactFragment contactFragment;
 
     private AppContent currentItem;
     private String currentFragmentTag;
 
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_NoActionBar);
@@ -102,7 +103,7 @@ public class MainActivity extends BaseActivity
             return;
         }
         if (this.currentFragmentTag != null && this.currentFragmentTag.equals(ContactFragment.class.toString())) {
-            if (!this.contactFragment.collapseBottomSheet())
+            if (!((ContactFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).collapseBottomSheet())
                 super.onBackPressed();
             return;
         }
@@ -115,8 +116,9 @@ public class MainActivity extends BaseActivity
             if (this.currentFragmentTag.equals(ContactFragment.class.toString()))
                 closeDrawer();
             this.currentFragmentTag = ContactFragment.class.toString();
-            addFragment(this.contactFragment);
+            addFragment(ContactFragment.newInstance());
             setTitle(getString(R.string.contact));
+        //} else if (item.getItemId() == Constants.MENU_GALLERY_ID) {
         } else {
             if (getSupportFragmentManager().findFragmentByTag(ContentContainerFragment.class.toString()) == null) {
                 this.currentFragmentTag = ContentContainerFragment.class.toString();
@@ -147,7 +149,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void handleInternetError(@Nullable final Fragment from) {
+    public void handleInternetError() {
         hideProgress();
         new MaterialDialog.Builder(this)
                 .title(getString(R.string.connection_error))
@@ -157,10 +159,7 @@ public class MainActivity extends BaseActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (from instanceof ContactFragment)
-                            contactFragment.retrieveDataCall();
-                        else if (from == null) //from MainActivity
-                            mainPresenter.populateApp();
+                        mainPresenter.populateApp();
                     }
                 })
                 .negativeText(getString(R.string.exit))
@@ -182,7 +181,7 @@ public class MainActivity extends BaseActivity
                     Snackbar.LENGTH_LONG).show();
 
         if (items == null) {
-            handleInternetError(null);
+            handleInternetError();
             return;
         }
 
@@ -216,7 +215,7 @@ public class MainActivity extends BaseActivity
         if (this.currentFragmentTag.equals(ContentContainerFragment.class.toString())) {
             this.contentContainerFragment.updateFragmentContents(this.currentItem);
         } else if (this.currentFragmentTag.equals(ContactFragment.class.toString())) {
-            this.contactFragment.setBottomSheetState(newConfig.orientation);
+            ((ContactFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).setBottomSheetState(newConfig.orientation);
         }
     }
 
@@ -233,7 +232,6 @@ public class MainActivity extends BaseActivity
         if (extraInfo.getExtra_items().contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
             this.currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_CONTACT_ID, this.currentNavigationViewMenu.size(),
                     getString(R.string.contact)).setIcon(AppmaticUtils.getIconRes(Constants.MENU_CONTACT_ICON, this));
-            this.contactFragment = ContactFragment.newInstance();
         }
 
         this.currentNavigationViewMenu.setGroupCheckable(R.id.main_group_menu, true, true);
@@ -257,9 +255,11 @@ public class MainActivity extends BaseActivity
                 this.contentContainerFragment.updateFragmentContents(this.currentItem);
             } else if (extraItems.contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
                 this.currentFragmentTag = ContentContainerFragment.class.toString();
-                addFragment(this.contactFragment);
+                addFragment(ContactFragment.newInstance());
                 showProgress(getString(R.string.loading), getString(R.string.loading_contact_msg));
                 setTitle(getString(R.string.contact));
+            } else if (extraItems.contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
+                addFragment(GalleryFragment.newInstance());
             }
 
         } catch (ArrayIndexOutOfBoundsException aiobe) {

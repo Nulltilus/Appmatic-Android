@@ -1,5 +1,8 @@
 package com.appmatic.baseapp.gallery;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.appmatic.baseapp.api.models.GalleryGroup;
 
 import java.util.ArrayList;
@@ -9,7 +12,7 @@ import java.util.ArrayList;
  */
 
 interface GalleryInteractor {
-    void retrieveImages(OnImagesReceivedListener onImagesReceivedListener);
+    void retrieveImages(@NonNull Context context, OnImagesReceivedListener onImagesReceivedListener);
 
     interface OnImagesReceivedListener {
         void onImagesReceived(ArrayList<GalleryGroup> groups);
