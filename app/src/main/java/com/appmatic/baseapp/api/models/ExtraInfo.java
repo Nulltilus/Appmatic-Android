@@ -24,9 +24,9 @@ import java.util.ArrayList;
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class ExtraInfo {
     public static final String TYPE_CONTACT_ITEM = "TYPE_CONTACT_ITEM";
+    public static final String TYPE_GALLERY_ITEM = "TYPE_GALLERY_ITEM";
 
     private boolean navigation_bar_colored;
     private String android_drawer_header_color;
