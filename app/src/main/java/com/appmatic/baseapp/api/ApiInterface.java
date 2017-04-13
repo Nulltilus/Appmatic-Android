@@ -3,6 +3,7 @@ package com.appmatic.baseapp.api;
 import com.appmatic.baseapp.api.models.AppContent;
 import com.appmatic.baseapp.api.models.Contact;
 import com.appmatic.baseapp.api.models.ExtraInfo;
+import com.appmatic.baseapp.api.models.GalleryGroup;
 import com.appmatic.baseapp.utils.Constants;
 
 import java.util.ArrayList;
@@ -40,4 +41,7 @@ public interface ApiInterface {
 
     @GET(Constants.APP_EXTRA_INFO_ENDPOINT + "?")
     Call<ExtraInfo> getExtraItems(@Query("app_id") String app_id);
+
+    @GET(Constants.APP_GALLERY_ENDPOINT + "?")
+    Call<ArrayList<GalleryGroup>> getGallery(@Query("app_id") String app_id);
 }
