@@ -32,12 +32,12 @@ import retrofit2.http.Query;
  */
 
 public interface ApiInterface {
-    @GET(Constants.APP_DATA_URL + "?")
+    @GET(Constants.APP_DATA_ENDPOINT + "?")
     Call<ArrayList<AppContent>> getAppData(@Query("app_id") String app_id);
 
-    @GET(Constants.APP_EXTRA_CONTACT + "?")
+    @GET(Constants.APP_EXTRA_CONTACT_ENDPOINT + "?")
     Call<Contact> getAppContact(@Query("app_id") String app_id);
 
-    @GET(Constants.APP_EXTRA_INFO + "?")
+    @GET(Constants.APP_EXTRA_INFO_ENDPOINT + "?")
     Call<ExtraInfo> getExtraItems(@Query("app_id") String app_id);
 }

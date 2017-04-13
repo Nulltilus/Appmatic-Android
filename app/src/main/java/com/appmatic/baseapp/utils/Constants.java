@@ -27,14 +27,17 @@ public class Constants {
     public static final String BASE_URL = "https://cpanel.appmatic.nulltilus.com/";
     public static final String API_URL = BASE_URL + "api/";
 
-    public static final String APP_DATA_URL = "get_app_content";
-    public static final String APP_EXTRA_INFO = "get_extra_info";
-    public static final String APP_EXTRA_CONTACT = "get_contact";
+    public static final String APP_DATA_ENDPOINT = "get_app_content";
+    public static final String APP_EXTRA_INFO_ENDPOINT = "get_extra_info";
+    public static final String APP_EXTRA_CONTACT_ENDPOINT = "get_contact";
+    public static final String APP_GALLERY_ENDPOINT = "get_gallery";
 
     public static final String PREF_FIRST_BOOT = "preferences.first_boot";
 
     // 0 to 127 (reserved for predefined views)
     public static final int MENU_CONTACT_ID = 0;
+    public static final int MENU_GALLERY_ID = 1;
     public static final String MENU_CONTACT_ICON = "ic_account_circle_black_48dp";
+    public static final String MENU_GALLERY_ICON = "ic_collections_black_48dp";
 
 }
