@@ -31,5 +31,20 @@ class GalleryInteractorImpl implements GalleryInteractor {
                 onImagesReceivedListener.onImagesError();
             }
         });
+        /*ArrayList<GalleryGroup> groups = new ArrayList<>();
+        GalleryGroup g1 = new GalleryGroup();
+        ArrayList<GalleryGroup.Image> images = new ArrayList<>();
+        images.add(new GalleryGroup.Image("https://c1.staticflickr.com/3/2883/9292210470_fee10e8c02_b.jpg"));
+        images.add(new GalleryGroup.Image("https://www.ocu.org/-/media/ocu/images/mobile/cervezas_500x281.jpg?h=-1&w=-1&la=es-ES&hash=587D8D128A143F24BC02C1F287987111F615D8DA"));
+        g1.setImages(images);
+        g1.setTitle("Cerveza");
+        GalleryGroup g2 = new GalleryGroup();
+        ArrayList<GalleryGroup.Image> images2 = new ArrayList<>();
+        images2.add(new GalleryGroup.Image("http://reseblavapies.net/wp-content/uploads/2016/06/hidromiel-1-580x250.jpg"));
+        g2.setImages(images2);
+        g2.setTitle("Hidromiel");
+        groups.add(g1);
+        groups.add(g2);
+        onImagesReceivedListener.onImagesReceived(groups);*/
     }
 }

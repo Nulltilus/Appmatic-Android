@@ -107,6 +107,13 @@ public class MainActivity extends BaseActivity
             if (!((ContactFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).collapseBottomSheet())
                 super.onBackPressed();
             return;
+        } else if (this.currentFragmentTag != null && this.currentFragmentTag.equals(GalleryFragment.class.toString())) {
+            if (((GalleryFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).isInGroupView())
+                super.onBackPressed();
+            else
+                ((GalleryFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).setInGroupView(true);
+            return;
+
         }
         super.onBackPressed();
     }
@@ -115,10 +122,11 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (currentFragmentTag != null && FragmentUtils.getTagByMenuId(item.getItemId()).equals(currentFragmentTag)) {
             closeDrawer();
-            return true;
+            if (!currentFragmentTag.equals(ContentContainerFragment.class.toString()))
+                return true;
+        } else {
+            this.currentFragmentTag = FragmentUtils.getTagByMenuId(item.getItemId());
         }
-
-        this.currentFragmentTag = FragmentUtils.getTagByMenuId(item.getItemId());
 
         if (item.getItemId() == Constants.MENU_CONTACT_ID) {
             addFragment(ContactFragment.newInstance());
@@ -233,6 +241,11 @@ public class MainActivity extends BaseActivity
         ((TextView) this.headerView.findViewById(R.id.tv_nav_main)).setText(extraInfo.getAndroid_drawer_header_main_text());
         ((TextView) this.headerView.findViewById(R.id.tv_nav_sub)).setText(extraInfo.getAndroid_drawer_header_sub_text());
         this.headerView.findViewById(R.id.navigation_header_layout).setBackgroundColor(Color.parseColor(extraInfo.getAndroid_drawer_header_color()));
+
+        if (!extraInfo.getExtra_items().contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
+            this.currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_GALLERY_ID, this.currentNavigationViewMenu.size(),
+                    getString(R.string.gallery)).setIcon(AppmaticUtils.getIconRes(Constants.MENU_GALLERY_ICON, this));
+        }
 
         if (extraInfo.getExtra_items().contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
             this.currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_CONTACT_ID, this.currentNavigationViewMenu.size(),

@@ -37,9 +37,12 @@ dependencies {
     compile 'com.jakewharton:process-phoenix:1.1.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.2'
     compile 'com.pixplicity.htmlcompat:library:1.0.0'
+    compile 'com.github.chrisbanes:PhotoView:2.0.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

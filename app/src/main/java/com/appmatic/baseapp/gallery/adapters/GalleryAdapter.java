@@ -1,9 +1,10 @@
-package com.appmatic.baseapp.gallery;
+package com.appmatic.baseapp.gallery.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by grender on 13/04/17.
  */
 
-class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_GROUP = 0;
     private static final int VIEW_TYPE_IMAGE = 1;
@@ -29,13 +30,14 @@ class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<GalleryGroup> groups;
     private int selectedGroupPosition = -1;
 
-    GalleryAdapter(ArrayList<GalleryGroup> groups, GalleryCallbacks galleryCallbacks) {
+    public GalleryAdapter(ArrayList<GalleryGroup> groups, GalleryCallbacks galleryCallbacks) {
         this.groups = groups;
         this.galleryCallbacks = galleryCallbacks;
     }
 
-    interface GalleryCallbacks {
-        void onImageClick(String url);
+    public interface GalleryCallbacks {
+        void onImageClick(ArrayList<GalleryGroup.Image> images, int position);
+        void onGroupClick(String title);
     }
 
     @Override
@@ -72,7 +74,10 @@ class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return groups != null ? groups.size() : 0;
+        if (selectedGroupPosition == -1)
+            return groups != null ? groups.size() : 0;
+        else
+            return groups != null ? groups.get(selectedGroupPosition).getImages().size() : 0;
     }
 
     public void backToGroups() {
@@ -85,37 +90,39 @@ class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    private class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.group_image_container) FrameLayout groupImageContainer;
         @BindView(R.id.group_image) ImageView groupImage;
         @BindView(R.id.group_title) TextView groupTitle;
 
-        public GroupViewHolder(View itemView) {
+        GroupViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            groupImage.setOnClickListener(this);
+            groupImageContainer.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
-            selectedGroupPosition = position;
+            selectedGroupPosition = getAdapterPosition();
+            galleryCallbacks.onGroupClick(groups.get(selectedGroupPosition).getTitle());
             notifyDataSetChanged();
         }
     }
 
-    private class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.item_image_container) FrameLayout itemImageContainer;
         @BindView(R.id.item_image) ImageView itemImage;
 
-        public ImageViewHolder(View itemView) {
+        ImageViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemImage.setOnClickListener(this);
+            itemImageContainer.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            galleryCallbacks.onImageClick(groups.get(selectedGroupPosition).getImages().get(position).getUrl());
+            galleryCallbacks.onImageClick(groups.get(selectedGroupPosition).getImages(), position);
         }
     }
 }

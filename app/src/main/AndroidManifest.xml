@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <!--
     As seen in http://stackoverflow.com/a/39696819/4208583
     <uses-permission
@@ -14,9 +15,8 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE" />
     -->
-
     <application
-        android:name="com.appmatic.baseapp.BaseApplication"
+        android:name=".BaseApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup, android:supportsRtl">
         <activity
-            android:name="com.appmatic.baseapp.main.MainActivity"
+            android:name=".main.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.ColdStart">
@@ -37,7 +37,7 @@
         </activity>
 
         <service
-            android:name="com.appmatic.baseapp.fcm.AppmaticMessagingService"
+            android:name=".fcm.AppmaticMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -49,6 +49,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_dev_api_key" />
 
+        <activity android:name=".gallery.preview.ImagePreviewActivity"></activity>
     </application>
 
 </manifest>

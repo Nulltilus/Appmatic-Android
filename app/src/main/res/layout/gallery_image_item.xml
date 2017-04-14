@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_image_container"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:layout_margin="1dp"
+    android:clipChildren="false"
     android:layout_width="match_parent"
     android:layout_height="128dp" >
 
@@ -9,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cropToPadding="true"
-        android:foreground="?attr/selectableItemBackground"
         android:scaleType="centerCrop"
         tools:ignore="ContentDescription" />
 
