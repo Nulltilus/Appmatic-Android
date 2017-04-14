@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.appmatic.baseapp.R;
 import com.appmatic.baseapp.api.models.Contact;
 import com.appmatic.baseapp.fragments.BaseFragment;
@@ -360,7 +362,26 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     @Override
     public void showErrorDialog() {
-        //((MainActivity) getActivity()).handleInternetError(this);
+        ((MainActivity) getActivity()).hideProgress();
+        new MaterialDialog.Builder(getActivity())
+                .title(getString(R.string.connection_error))
+                .content(getString(R.string.connection_error_msg))
+                .cancelable(false)
+                .positiveText(getString(R.string.retry))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        retrieveDataCall();
+                    }
+                })
+                .negativeText(getString(R.string.exit))
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        System.exit(0);
+                    }
+                })
+                .show();
     }
 
     @Override

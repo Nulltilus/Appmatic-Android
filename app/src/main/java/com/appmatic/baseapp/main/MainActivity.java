@@ -36,6 +36,7 @@ import com.appmatic.baseapp.fragments.BaseFragment;
 import com.appmatic.baseapp.gallery.GalleryFragment;
 import com.appmatic.baseapp.utils.AppmaticUtils;
 import com.appmatic.baseapp.utils.Constants;
+import com.appmatic.baseapp.utils.FragmentUtils;
 import com.appmatic.baseapp.utils.InternetUtils;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
@@ -112,18 +113,22 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (currentFragmentTag != null && FragmentUtils.getTagByMenuId(item.getItemId()).equals(currentFragmentTag)) {
+            closeDrawer();
+            return true;
+        }
+
+        this.currentFragmentTag = FragmentUtils.getTagByMenuId(item.getItemId());
+
         if (item.getItemId() == Constants.MENU_CONTACT_ID) {
-            if (this.currentFragmentTag.equals(ContactFragment.class.toString()))
-                closeDrawer();
-            this.currentFragmentTag = ContactFragment.class.toString();
             addFragment(ContactFragment.newInstance());
             setTitle(getString(R.string.contact));
-        //} else if (item.getItemId() == Constants.MENU_GALLERY_ID) {
+        } else if (item.getItemId() == Constants.MENU_GALLERY_ID) {
+            addFragment(GalleryFragment.newInstance());
+            setTitle(getString(R.string.gallery));
         } else {
-            if (getSupportFragmentManager().findFragmentByTag(ContentContainerFragment.class.toString()) == null) {
-                this.currentFragmentTag = ContentContainerFragment.class.toString();
+            if (getSupportFragmentManager().findFragmentByTag(ContentContainerFragment.class.toString()) == null)
                 addFragment(this.contentContainerFragment);
-            }
             this.currentItem = this.items.get(this.items.indexOf(new AppContent(item.getItemId())));
             setTitle(this.currentItem.getName());
             this.contentContainerFragment.updateFragmentContents(this.currentItem);

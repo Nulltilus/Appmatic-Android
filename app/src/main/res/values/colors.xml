@@ -6,4 +6,6 @@
 
     <color name="mainTextColor">#000000</color> <!--#444444-->
     <color name="white">#FFFFFF</color>
+
+    <color name="gallery_group_title_background">#66000000</color>
 </resources>
