@@ -22,6 +22,8 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
+
+
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1px</item>

@@ -15,6 +15,8 @@
         android:layout_height="match_parent"
         android:cropToPadding="true"
         android:scaleType="centerCrop"
-        tools:ignore="ContentDescription" />
+        android:transitionName="@string/gallery_transition"
+        tools:ignore="ContentDescription"
+        tools:targetApi="lollipop" />
 
 </FrameLayout>

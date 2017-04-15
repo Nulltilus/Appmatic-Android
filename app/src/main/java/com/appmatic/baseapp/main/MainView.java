@@ -1,6 +1,5 @@
 package com.appmatic.baseapp.main;
 
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.appmatic.baseapp.api.models.AppContent;

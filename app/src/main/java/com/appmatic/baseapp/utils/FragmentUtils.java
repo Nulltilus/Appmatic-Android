@@ -1,7 +1,5 @@
 package com.appmatic.baseapp.utils;
 
-import android.support.v4.app.Fragment;
-
 import com.appmatic.baseapp.contact.ContactFragment;
 import com.appmatic.baseapp.content_container.ContentContainerFragment;
 import com.appmatic.baseapp.gallery.GalleryFragment;

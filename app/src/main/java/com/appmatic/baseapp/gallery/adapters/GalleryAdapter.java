@@ -111,8 +111,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.item_image_container) FrameLayout itemImageContainer;
-        @BindView(R.id.item_image) ImageView itemImage;
-
+        public @BindView(R.id.item_image) ImageView itemImage;
         ImageViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

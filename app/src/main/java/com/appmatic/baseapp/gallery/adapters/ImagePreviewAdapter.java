@@ -3,8 +3,6 @@ package com.appmatic.baseapp.gallery.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +38,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return object instanceof ViewHolder
-                && view.equals(((ViewHolder) object).itemView);
+                && view.equals(((ViewHolder) object).photoView);
     }
 
     @Override
@@ -50,22 +48,22 @@ public class ImagePreviewAdapter extends PagerAdapter {
         ViewHolder viewHolder = new ViewHolder(view);
         Glide.with(context)
                 .load(images.get(position).getUrl())
+                .dontAnimate()
                 .into(viewHolder.photoView);
-        container.addView(viewHolder.itemView);
+        container.addView(viewHolder.photoView);
         return viewHolder;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(((ViewHolder) object).itemView);
+        Glide.clear(((ViewHolder) object).photoView);
+        container.removeView(((ViewHolder) object).photoView);
     }
 
     static class ViewHolder {
-        final View itemView;
         @BindView(R.id.item_image_preview) PhotoView photoView;
 
         ViewHolder(View itemView) {
-            this.itemView = itemView;
             ButterKnife.bind(this, itemView);
         }
     }

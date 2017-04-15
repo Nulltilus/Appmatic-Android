@@ -28,4 +28,5 @@
 
     <string name="gallery">Galería</string>
     <string name="loading_gallery_msg">Obteniendo galería.</string>
+    <string name="gallery_transition">gallery_transition</string>
 </resources>
