@@ -16,6 +16,7 @@ interface GalleryInteractor {
 
     interface OnImagesReceivedListener {
         void onImagesReceived(ArrayList<GalleryGroup> groups);
+
         void onImagesError();
     }
 }

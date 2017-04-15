@@ -107,10 +107,10 @@ public class MainActivity extends BaseActivity
                 super.onBackPressed();
             return;
         } else if (this.currentFragmentTag != null && this.currentFragmentTag.equals(GalleryFragment.class.toString())) {
-            if (((GalleryFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).isInGroupView())
+            if (((GalleryFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).getSelectedGroup() == -1)
                 super.onBackPressed();
             else
-                ((GalleryFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).setInGroupView(true);
+                ((GalleryFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).setSelectedGroup(-1);
             return;
 
         }
@@ -208,6 +208,11 @@ public class MainActivity extends BaseActivity
         this.mainPresenter.getExtraItems();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @SuppressLint("CommitTransaction")
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -228,6 +233,8 @@ public class MainActivity extends BaseActivity
             this.contentContainerFragment.updateFragmentContents(this.currentItem);
         } else if (this.currentFragmentTag.equals(ContactFragment.class.toString())) {
             ((ContactFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).setBottomSheetState(newConfig.orientation);
+        } else if (this.currentFragmentTag.equals(GalleryFragment.class.toString())) {
+            setTitle(R.string.gallery);
         }
     }
 

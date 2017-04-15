@@ -10,7 +10,6 @@
         android:id="@+id/preview_images_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:transitionName="@string/gallery_transition"
         tools:targetApi="lollipop" />
 
     <android.support.v7.widget.Toolbar

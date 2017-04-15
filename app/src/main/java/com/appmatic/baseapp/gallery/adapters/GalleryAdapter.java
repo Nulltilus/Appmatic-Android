@@ -1,5 +1,6 @@
 package com.appmatic.baseapp.gallery.adapters;
 
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,16 +29,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private GalleryCallbacks galleryCallbacks;
     private ArrayList<GalleryGroup> groups;
-    private int selectedGroupPosition = -1;
+    private int selectedGroupPosition;
 
-    public GalleryAdapter(ArrayList<GalleryGroup> groups, GalleryCallbacks galleryCallbacks) {
+    public GalleryAdapter(ArrayList<GalleryGroup> groups, GalleryCallbacks galleryCallbacks, int selectedGroupPosition) {
         this.groups = groups;
         this.galleryCallbacks = galleryCallbacks;
-    }
-
-    public interface GalleryCallbacks {
-        void onImageClick(ArrayList<GalleryGroup.Image> images, int position);
-        void onGroupClick(String title);
+        this.selectedGroupPosition = selectedGroupPosition;
     }
 
     @Override
@@ -61,6 +58,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((GroupViewHolder) holder).groupTitle.setText(galleryGroup.getTitle());
         } else if (holder instanceof ImageViewHolder) {
             final GalleryGroup.Image image = groups.get(selectedGroupPosition).getImages().get(position);
+            ViewCompat.setTransitionName(((ImageViewHolder) holder).itemImage, image.getUrl());
             Glide.with(((ImageViewHolder) holder).itemImage.getContext())
                     .load(image.getUrl())
                     .into(((ImageViewHolder) holder).itemImage);
@@ -90,10 +88,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         notifyDataSetChanged();
     }
 
+    public interface GalleryCallbacks {
+        void onImageClick(ArrayList<GalleryGroup.Image> images, int position);
+
+        void onGroupClick(String title, int selectedGroup);
+    }
+
     public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.group_image_container) FrameLayout groupImageContainer;
-        @BindView(R.id.group_image) ImageView groupImage;
-        @BindView(R.id.group_title) TextView groupTitle;
+        @BindView(R.id.group_image_container)
+        FrameLayout groupImageContainer;
+        @BindView(R.id.group_image)
+        ImageView groupImage;
+        @BindView(R.id.group_title)
+        TextView groupTitle;
 
         GroupViewHolder(View itemView) {
             super(itemView);
@@ -104,14 +111,18 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @Override
         public void onClick(View view) {
             selectedGroupPosition = getAdapterPosition();
-            galleryCallbacks.onGroupClick(groups.get(selectedGroupPosition).getTitle());
+            galleryCallbacks.onGroupClick(groups.get(selectedGroupPosition).getTitle(), selectedGroupPosition);
             notifyDataSetChanged();
         }
     }
 
     public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.item_image_container) FrameLayout itemImageContainer;
-        public @BindView(R.id.item_image) ImageView itemImage;
+        public
+        @BindView(R.id.item_image)
+        ImageView itemImage;
+        @BindView(R.id.item_image_container)
+        FrameLayout itemImageContainer;
+
         ImageViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

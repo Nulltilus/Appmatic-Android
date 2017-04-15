@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,9 +35,11 @@ import butterknife.BindView;
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
 public class GalleryFragment extends BaseFragment implements GalleryView, GalleryAdapter.GalleryCallbacks {
-    @BindView(R.id.images_recycler_view) RecyclerView imagesRecyclerView;
+    private static final String SELECTED_GROUP_EXTRA = "SELECTED_GROUP_EXTRA";
+    @BindView(R.id.images_recycler_view)
+    RecyclerView imagesRecyclerView;
     private GalleryPresenter galleryPresenter;
-    private boolean isInGroupView;
+    private int selectedGroup;
     private GallerySharedElementCallback sharedElementCallback;
 
     public static GalleryFragment newInstance() {
@@ -49,7 +50,10 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         galleryPresenter = new GalleryPresenterImpl(this);
-        isInGroupView = true;
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_GROUP_EXTRA))
+            selectedGroup = savedInstanceState.getInt(SELECTED_GROUP_EXTRA);
+        else
+            selectedGroup = -1;
         return super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_gallery);
     }
 
@@ -67,6 +71,12 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SELECTED_GROUP_EXTRA, selectedGroup);
+    }
+
+    @Override
     public void onImageClick(ArrayList<GalleryGroup.Image> images, int position) {
         Intent previewActivityIntent = new Intent(getActivity(), ImagePreviewActivity.class);
         previewActivityIntent.putParcelableArrayListExtra(ImagePreviewActivity.PREVIEW_IMAGES_EXTRA, images);
@@ -75,7 +85,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
             GalleryAdapter.ImageViewHolder imageViewHolder =
                     (GalleryAdapter.ImageViewHolder) imagesRecyclerView.findViewHolderForAdapterPosition(position);
             ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(getActivity(), imageViewHolder.itemImage, getString(R.string.gallery_transition));
+                    .makeSceneTransitionAnimation(getActivity(), imageViewHolder.itemImage, images.get(position).getUrl());
             ActivityCompat.startActivity(getActivity(), previewActivityIntent, activityOptionsCompat.toBundle());
         } else {
             startActivity(previewActivityIntent);
@@ -134,9 +144,9 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
             public boolean onPreDraw() {
                 imagesRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                GalleryAdapter.ImageViewHolder imageViewHolder =
-                        (GalleryAdapter.ImageViewHolder) imagesRecyclerView.findViewHolderForAdapterPosition(finalPosition);
-                sharedElementCallback.setSharedElementViews(imageViewHolder.itemImage);
+                RecyclerView.ViewHolder imageViewHolder = imagesRecyclerView.findViewHolderForAdapterPosition(finalPosition);
+                if (imageViewHolder instanceof GalleryAdapter.ImageViewHolder)
+                    sharedElementCallback.setSharedElementViews(((GalleryAdapter.ImageViewHolder) imageViewHolder).itemImage);
 
                 getActivity().supportStartPostponedEnterTransition();
 
@@ -146,15 +156,15 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     }
 
     @Override
-    public void onGroupClick(String title) {
+    public void onGroupClick(String title, int selectedGroup) {
         getActivity().setTitle(title);
-        isInGroupView = false;
+        this.selectedGroup = selectedGroup;
     }
 
     @Override
     public void setupGroups(ArrayList<GalleryGroup> groups) {
         ((MainActivity) getActivity()).hideProgress();
-        imagesRecyclerView.setAdapter(new GalleryAdapter(groups, this));
+        imagesRecyclerView.setAdapter(new GalleryAdapter(groups, this, selectedGroup));
     }
 
     @Override
@@ -181,13 +191,13 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
                 .show();
     }
 
-    public boolean isInGroupView() {
-        return isInGroupView;
+    public int getSelectedGroup() {
+        return selectedGroup;
     }
 
-    public void setInGroupView(boolean inGroupView) {
-        isInGroupView = inGroupView;
-        if (inGroupView) {
+    public void setSelectedGroup(int selectedGroup) {
+        this.selectedGroup = selectedGroup;
+        if (selectedGroup == -1) {
             ((GalleryAdapter) imagesRecyclerView.getAdapter()).backToGroups();
             getActivity().setTitle(R.string.gallery);
         }

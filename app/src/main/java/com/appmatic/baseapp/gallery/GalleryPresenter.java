@@ -6,5 +6,6 @@ package com.appmatic.baseapp.gallery;
 
 interface GalleryPresenter {
     void getImages();
+
     void onDestroy();
 }

@@ -6,7 +6,7 @@
     android:foreground="?attr/selectableItemBackground"
     android:layout_margin="1dp"
     android:layout_width="match_parent"
-    android:layout_height="128dp" >
+    android:layout_height="@dimen/gallery_item_size" >
 
     <ImageView
         android:id="@+id/group_image"

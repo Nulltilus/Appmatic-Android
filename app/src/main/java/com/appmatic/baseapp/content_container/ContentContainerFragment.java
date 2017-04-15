@@ -64,7 +64,7 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
                     .parseContent(getActivity(), content, i == 0, i == fragmentContents.getContents().size() - 1);
 
             if (newView instanceof ImageView)
-                Glide.with(this).load(content.getContent()).into(((ImageView) newView));
+                Glide.with(getActivity()).load(content.getContent()).into(((ImageView) newView));
             this.contentContainer.addView(newView);
         }
     }

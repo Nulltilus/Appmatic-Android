@@ -54,6 +54,17 @@ public class GalleryGroup {
     }
 
     public static class Image implements Parcelable {
+        public static final Creator<Image> CREATOR = new Creator<Image>() {
+            @Override
+            public Image createFromParcel(Parcel in) {
+                return new Image(in);
+            }
+
+            @Override
+            public Image[] newArray(int size) {
+                return new Image[size];
+            }
+        };
         private String url;
 
         public Image() {
@@ -66,18 +77,6 @@ public class GalleryGroup {
         protected Image(Parcel in) {
             url = in.readString();
         }
-
-        public static final Creator<Image> CREATOR = new Creator<Image>() {
-            @Override
-            public Image createFromParcel(Parcel in) {
-                return new Image(in);
-            }
-
-            @Override
-            public Image[] newArray(int size) {
-                return new Image[size];
-            }
-        };
 
         public String getUrl() {
             return url;

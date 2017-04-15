@@ -50,6 +50,7 @@
             android:value="@string/google_dev_api_key" />
 
         <activity android:name=".gallery.preview.ImagePreviewActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Preview" />
     </application>
 

@@ -24,5 +24,6 @@ import com.appmatic.baseapp.api.models.AppContent;
 
 interface ContentContainerView {
     void updateFragmentContents(AppContent fragmentContents);
+
     void clearFragmentContents();
 }

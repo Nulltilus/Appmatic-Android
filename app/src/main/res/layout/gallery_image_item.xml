@@ -7,7 +7,7 @@
     android:layout_margin="1dp"
     android:clipChildren="false"
     android:layout_width="match_parent"
-    android:layout_height="128dp" >
+    android:layout_height="@dimen/gallery_item_size" >
 
     <ImageView
         android:id="@+id/item_image"
@@ -15,7 +15,6 @@
         android:layout_height="match_parent"
         android:cropToPadding="true"
         android:scaleType="centerCrop"
-        android:transitionName="@string/gallery_transition"
         tools:ignore="ContentDescription"
         tools:targetApi="lollipop" />
 

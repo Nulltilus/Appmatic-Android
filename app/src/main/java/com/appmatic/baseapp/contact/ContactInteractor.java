@@ -30,6 +30,7 @@ interface ContactInteractor {
 
     interface OnContactDataReceivedListener {
         void onContactDataReceived(Contact contact);
+
         void onContactDataError();
     }
 
