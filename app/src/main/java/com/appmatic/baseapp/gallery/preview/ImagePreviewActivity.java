@@ -11,6 +11,7 @@ import com.appmatic.baseapp.R;
 import com.appmatic.baseapp.activities.BaseActivity;
 import com.appmatic.baseapp.api.models.GalleryGroup;
 import com.appmatic.baseapp.gallery.adapters.ImagePreviewAdapter;
+import com.appmatic.baseapp.gallery.custom.DepthPageTransformer;
 import com.appmatic.baseapp.gallery.custom.ExceptionFreeViewPager;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ImagePreviewActivity extends BaseActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         previewImagesViewpager.setAdapter(new ImagePreviewAdapter(this, images));
+        previewImagesViewpager.setPageTransformer(true, new DepthPageTransformer());
         previewImagesViewpager.setCurrentItem(initialPosition, false);
     }
 
