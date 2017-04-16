@@ -38,6 +38,8 @@ interface MainView {
 
     void handleFirstContentState(ArrayList<String> extraItems);
 
+    void restoreContent();
+
     void setUpRemainingContent(ExtraInfo extraInfo);
 
     void addFragment(Fragment fragmentToAdd);

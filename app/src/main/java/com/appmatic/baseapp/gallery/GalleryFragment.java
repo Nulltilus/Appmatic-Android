@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
@@ -35,12 +36,14 @@ import butterknife.BindView;
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
 public class GalleryFragment extends BaseFragment implements GalleryView, GalleryAdapter.GalleryCallbacks {
-    private static final String SELECTED_GROUP_EXTRA = "SELECTED_GROUP_EXTRA";
     @BindView(R.id.images_recycler_view)
     RecyclerView imagesRecyclerView;
     private GalleryPresenter galleryPresenter;
     private int selectedGroup;
     private GallerySharedElementCallback sharedElementCallback;
+
+    private static final String SELECTED_GROUP_EXTRA = "SELECTED_GROUP_EXTRA";
+    private static final String LAST_TITLE_EXTRA = "LAST_TITLE_EXTRA";
 
     public static GalleryFragment newInstance() {
         return new GalleryFragment();
@@ -50,10 +53,15 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         galleryPresenter = new GalleryPresenterImpl(this);
-        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_GROUP_EXTRA))
-            selectedGroup = savedInstanceState.getInt(SELECTED_GROUP_EXTRA);
-        else
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(SELECTED_GROUP_EXTRA)) {
+                selectedGroup = savedInstanceState.getInt(SELECTED_GROUP_EXTRA);
+                getActivity().setTitle(savedInstanceState.getString(LAST_TITLE_EXTRA));
+            }
+        } else {
             selectedGroup = -1;
+            getActivity().setTitle(getString(R.string.gallery));
+        }
         return super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_gallery);
     }
 
@@ -74,6 +82,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SELECTED_GROUP_EXTRA, selectedGroup);
+        outState.putString(LAST_TITLE_EXTRA, getActivity().getTitle().toString());
     }
 
     @Override
@@ -93,6 +102,13 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     }
 
     public void onActivityReenter(int resultCode, Intent data) {
+        if (imagesRecyclerView == null && getActivity() != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getActivity().getWindow().getSharedElementExitTransition().addListener(null);
+            getActivity().setExitSharedElementCallback((SharedElementCallback) null);
+            return;
+        }
+
         int position = NO_POSITION;
         if (resultCode == Activity.RESULT_OK && data != null && data.hasExtra(ImagePreviewActivity.LAST_POSITION_EXTRA))
             position = data.getIntExtra(ImagePreviewActivity.LAST_POSITION_EXTRA, NO_POSITION);

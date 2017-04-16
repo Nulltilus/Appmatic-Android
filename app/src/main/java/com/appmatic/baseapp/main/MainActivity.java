@@ -17,6 +17,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.appmatic.baseapp.R;
 import com.appmatic.baseapp.activities.BaseActivity;
 import com.appmatic.baseapp.api.models.AppContent;
+import com.appmatic.baseapp.api.models.Contact;
 import com.appmatic.baseapp.api.models.ExtraInfo;
 import com.appmatic.baseapp.contact.ContactFragment;
 import com.appmatic.baseapp.content_container.ContentContainerFragment;
@@ -76,18 +79,40 @@ public class MainActivity extends BaseActivity
     private MainPresenter mainPresenter;
 
     private MaterialDialog progressDialog;
-    private ContentContainerFragment contentContainerFragment;
     private ArrayList<AppContent> items;
     private Menu currentNavigationViewMenu;
+    private int lastSelectedMenuId;
 
     private AppContent currentItem;
+    private int currentItemPosition;
     private String currentFragmentTag;
+    private boolean shouldHandleState;
+
+    private SparseIntArray menuIdPosition = new SparseIntArray();
+
+    private static final String CURRENT_FRAGMENT_TAG_EXTRA = "CURRENT_FRAGMENT_TAG_EXTRA";
+    private static final String CURRENT_ITEM_POSITION_EXTRA = "CURRENT_ITEM_POSITION_EXTRA";
+    private static final String LAST_SELECTED_MENU_ID = "LAST_SELECTED_MENU_ID";
 
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState, R.layout.activity_main);
+
+        if (savedInstanceState != null) {
+            shouldHandleState = true;
+            if (savedInstanceState.containsKey(CURRENT_FRAGMENT_TAG_EXTRA))
+                currentFragmentTag = savedInstanceState.getString(CURRENT_FRAGMENT_TAG_EXTRA);
+            if (savedInstanceState.containsKey(CURRENT_ITEM_POSITION_EXTRA))
+                currentItemPosition = savedInstanceState.getInt(CURRENT_ITEM_POSITION_EXTRA);
+            if (savedInstanceState.containsKey(LAST_SELECTED_MENU_ID))
+                lastSelectedMenuId = savedInstanceState.getInt(LAST_SELECTED_MENU_ID);
+        } else {
+            currentFragmentTag = "";
+            lastSelectedMenuId = -1;
+            shouldHandleState = false;
+        }
 
         FCMHelper.subscribeToFCMTopic(this);
 
@@ -119,6 +144,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        currentItemPosition = menuIdPosition.get(item.getItemId());
         if (currentFragmentTag != null && FragmentUtils.getTagByMenuId(item.getItemId()).equals(currentFragmentTag)) {
             closeDrawer();
             if (!currentFragmentTag.equals(ContentContainerFragment.class.toString()))
@@ -135,10 +161,10 @@ public class MainActivity extends BaseActivity
             setTitle(getString(R.string.gallery));
         } else {
             if (getSupportFragmentManager().findFragmentByTag(ContentContainerFragment.class.toString()) == null)
-                addFragment(this.contentContainerFragment);
+                addFragment(ContentContainerFragment.newInstance());
             this.currentItem = this.items.get(this.items.indexOf(new AppContent(item.getItemId())));
             setTitle(this.currentItem.getName());
-            this.contentContainerFragment.updateFragmentContents(this.currentItem);
+            ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(this.currentItem);
         }
 
         return true;
@@ -197,11 +223,13 @@ public class MainActivity extends BaseActivity
             return;
         }
 
-        for (AppContent item : items) {
+        for (int i = 0; i < items.size(); i++) {
+            AppContent item = items.get(i);
+            menuIdPosition.put(item.getContent_id(), i);
             if (AppmaticUtils.getIconRes(item.getIcon_id(), this) == -1)
-                this.currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), item.getPosition(), item.getName());
+                this.currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), i, item.getName());
             else
-                this.currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), item.getPosition(),
+                this.currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), i,
                         item.getName()).setIcon(AppmaticUtils.getIconRes(item.getIcon_id(), this));
         }
 
@@ -211,31 +239,10 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-
-    @SuppressLint("CommitTransaction")
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        if (this.currentFragmentTag == null) {
-            super.onConfigurationChanged(newConfig);
-            return;
-        }
-
-        getSupportFragmentManager().beginTransaction()
-                .detach(getSupportFragmentManager().findFragmentByTag(this.currentFragmentTag))
-                .commitNowAllowingStateLoss();
-        super.onConfigurationChanged(newConfig);
-        getSupportFragmentManager().beginTransaction()
-                .attach(getSupportFragmentManager().findFragmentByTag(this.currentFragmentTag))
-                .commitNowAllowingStateLoss();
-
-        if (this.currentFragmentTag.equals(ContentContainerFragment.class.toString())) {
-            this.contentContainerFragment.updateFragmentContents(this.currentItem);
-        } else if (this.currentFragmentTag.equals(ContactFragment.class.toString())) {
-            ((ContactFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).setBottomSheetState(newConfig.orientation);
-        } else if (this.currentFragmentTag.equals(GalleryFragment.class.toString())) {
-            setTitle(R.string.gallery);
-        }
+        outState.putString(CURRENT_FRAGMENT_TAG_EXTRA, currentFragmentTag);
+        outState.putInt(CURRENT_ITEM_POSITION_EXTRA, currentItemPosition);
+        outState.putInt(LAST_SELECTED_MENU_ID,
+                currentNavigationViewMenu.size() > currentItemPosition ? currentNavigationViewMenu.getItem(currentItemPosition).getItemId() : -1);
     }
 
     @Override
@@ -249,11 +256,13 @@ public class MainActivity extends BaseActivity
         this.headerView.findViewById(R.id.navigation_header_layout).setBackgroundColor(Color.parseColor(extraInfo.getAndroid_drawer_header_color()));
 
         if (!extraInfo.getExtra_items().contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
+            menuIdPosition.put(Constants.MENU_GALLERY_ID, this.currentNavigationViewMenu.size());
             this.currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_GALLERY_ID, this.currentNavigationViewMenu.size(),
                     getString(R.string.gallery)).setIcon(AppmaticUtils.getIconRes(Constants.MENU_GALLERY_ICON, this));
         }
 
         if (extraInfo.getExtra_items().contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
+            menuIdPosition.put(Constants.MENU_CONTACT_ID, this.currentNavigationViewMenu.size());
             this.currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_CONTACT_ID, this.currentNavigationViewMenu.size(),
                     getString(R.string.contact)).setIcon(AppmaticUtils.getIconRes(Constants.MENU_CONTACT_ICON, this));
         }
@@ -268,26 +277,52 @@ public class MainActivity extends BaseActivity
     @Override
     public void handleFirstContentState(ArrayList<String> extraItems) {
         try {
-            if (this.currentNavigationViewMenu.size() > 0)
-                this.currentNavigationViewMenu.getItem(0).setChecked(true);
-
-            if (items.size() > 0) {
-                this.currentFragmentTag = ContentContainerFragment.class.toString();
-                this.currentItem = this.items.get(0);
-                setTitle(this.currentItem.getName());
-                addFragment(this.contentContainerFragment);
-                this.contentContainerFragment.updateFragmentContents(this.currentItem);
-            } else if (extraItems.contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
-                this.currentFragmentTag = ContentContainerFragment.class.toString();
-                addFragment(ContactFragment.newInstance());
-                showProgress(getString(R.string.loading), getString(R.string.loading_contact_msg));
-                setTitle(getString(R.string.contact));
-            } else if (extraItems.contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
-                addFragment(GalleryFragment.newInstance());
+            if (this.currentNavigationViewMenu.size() >= currentItemPosition &&
+                    this.currentNavigationViewMenu.size() != 0) {
+                // Menu has changed since last update, should restart.
+                if (lastSelectedMenuId != -1 &&
+                        lastSelectedMenuId != currentNavigationViewMenu.getItem(currentItemPosition).getItemId()) {
+                    hideProgress();
+                    shouldHandleState = false;
+                    lastSelectedMenuId = -1;
+                    currentFragmentTag = "";
+                    ProcessPhoenix.triggerRebirth(this);
+                } else {
+                    this.currentNavigationViewMenu.getItem(currentItemPosition).setChecked(true);
+                }
             }
 
-        } catch (ArrayIndexOutOfBoundsException aiobe) {
+            if (shouldHandleState) {
+                restoreContent();
+                shouldHandleState = false;
+            } else {
+                if (items.size() > 0) {
+                    this.currentFragmentTag = ContentContainerFragment.class.toString();
+                    this.currentItem = this.items.get(0);
+                    this.currentItemPosition = 0;
+                    setTitle(this.currentItem.getName());
+                    addFragment(ContentContainerFragment.newInstance());
+                    ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(this.currentItem);
+                } else if (!extraItems.contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
+                    this.currentFragmentTag = GalleryFragment.class.toString();
+                    addFragment(GalleryFragment.newInstance());
+                } else if (extraItems.contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
+                    this.currentFragmentTag = ContentContainerFragment.class.toString();
+                    addFragment(ContactFragment.newInstance());
+                }
+            }
+        } catch (Exception genericException) {
+            hideProgress();
             ProcessPhoenix.triggerRebirth(this);
+        }
+    }
+
+    @Override
+    public void restoreContent() {
+        if (currentFragmentTag.equals(ContentContainerFragment.class.toString())) {
+            this.currentItem = this.items.get(currentItemPosition);
+            setTitle(this.currentItem.getName());
+            ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(this.currentItem);
         }
     }
 
@@ -358,8 +393,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void setupViews() {
-        this.contentContainerFragment = ContentContainerFragment.newInstance();
-
         this.mainPresenter = new MainPresenterImpl(this);
 
         setSupportActionBar(this.toolbar);

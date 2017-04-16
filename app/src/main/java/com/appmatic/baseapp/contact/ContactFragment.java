@@ -109,6 +109,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_contact);
+        getActivity().setTitle(getString(R.string.contact));
         final Bundle mapViewSavedInstanceState =
                 savedInstanceState != null ? savedInstanceState.getBundle(MAP_VIEW_SAVE_STATE) : null;
         if (mapView != null)
@@ -118,6 +119,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ((MainActivity) getActivity()).showProgress(getString(R.string.loading), getString(R.string.loading_contact_msg));
         if (mapView != null)
             this.mapView.getMapAsync(this);
     }
