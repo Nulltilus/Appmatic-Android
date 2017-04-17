@@ -25,20 +25,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 
 interface ContactView {
     void showFullscreenMap();
-
     void performPhoneCall();
-
     void sendEmail();
-
     void openWebsite();
-
     void populateContent(Contact contact);
-
     void setBottomSheetState(int orientation);
-
     boolean collapseBottomSheet();
-
     CameraPosition getCameraPositionAtLocation();
-
     void showErrorDialog();
 }

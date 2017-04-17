@@ -29,20 +29,12 @@ import java.util.ArrayList;
 
 interface MainView {
     void showProgress(String title, String message);
-
     void hideProgress();
-
     void handleInternetError();
-
     void updateAllContent(ArrayList<AppContent> appContents);
-
     void handleFirstContentState(ArrayList<String> extraItems);
-
     void restoreContent();
-
     void setUpRemainingContent(ExtraInfo extraInfo);
-
     void addFragment(Fragment fragmentToAdd);
-
     void closeDrawer();
 }

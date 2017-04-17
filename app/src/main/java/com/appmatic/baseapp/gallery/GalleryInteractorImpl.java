@@ -14,7 +14,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by grender on 13/04/17.
+ * Appmatic
+ * Copyright (C) 2016 - Nulltilus
+ * <p>
+ * This file is part of Appmatic.
+ * <p>
+ * Appmatic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * <p>
+ * Appmatic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class GalleryInteractorImpl implements GalleryInteractor {
@@ -31,20 +47,5 @@ class GalleryInteractorImpl implements GalleryInteractor {
                 onImagesReceivedListener.onImagesError();
             }
         });
-        /*ArrayList<GalleryGroup> groups = new ArrayList<>();
-        GalleryGroup g1 = new GalleryGroup();
-        ArrayList<GalleryGroup.Image> images = new ArrayList<>();
-        images.add(new GalleryGroup.Image("https://c1.staticflickr.com/3/2883/9292210470_fee10e8c02_b.jpg"));
-        images.add(new GalleryGroup.Image("https://www.ocu.org/-/media/ocu/images/mobile/cervezas_500x281.jpg?h=-1&w=-1&la=es-ES&hash=587D8D128A143F24BC02C1F287987111F615D8DA"));
-        g1.setImages(images);
-        g1.setTitle("Cerveza");
-        GalleryGroup g2 = new GalleryGroup();
-        ArrayList<GalleryGroup.Image> images2 = new ArrayList<>();
-        images2.add(new GalleryGroup.Image("http://reseblavapies.net/wp-content/uploads/2016/06/hidromiel-1-580x250.jpg"));
-        g2.setImages(images2);
-        g2.setTitle("Hidromiel");
-        groups.add(g1);
-        groups.add(g2);
-        onImagesReceivedListener.onImagesReceived(groups);*/
     }
 }

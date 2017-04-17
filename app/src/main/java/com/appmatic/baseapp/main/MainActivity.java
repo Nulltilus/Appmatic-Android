@@ -118,9 +118,34 @@ public class MainActivity extends BaseActivity
 
         FCMHelper.subscribeToFCMTopic(this);
 
-        this.mainPresenter.populateApp();
+        mainPresenter.populateApp();
 
-        this.headerView = navigationView.getHeaderView(0);
+        headerView = navigationView.getHeaderView(0);
+    }
+
+    @Override
+    protected void setupViews() {
+        mainPresenter = new MainPresenterImpl(this);
+
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, 0); // this disables the hamburger to arrow animation
+            }
+
+        };
+
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        currentNavigationViewMenu = navigationView.getMenu();
+    }
+
+    @Override
+    protected void setListeners() {
+        this.navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -129,11 +154,11 @@ public class MainActivity extends BaseActivity
             drawer.closeDrawer(GravityCompat.START);
             return;
         }
-        if (this.currentFragmentTag != null && this.currentFragmentTag.equals(ContactFragment.class.toString())) {
+        if (currentFragmentTag != null && currentFragmentTag.equals(ContactFragment.class.toString())) {
             if (!((ContactFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).collapseBottomSheet())
                 super.onBackPressed();
             return;
-        } else if (this.currentFragmentTag != null && this.currentFragmentTag.equals(GalleryFragment.class.toString())) {
+        } else if (currentFragmentTag != null && currentFragmentTag.equals(GalleryFragment.class.toString())) {
             if (((GalleryFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).getSelectedGroup() == -1)
                 super.onBackPressed();
             else
@@ -152,7 +177,7 @@ public class MainActivity extends BaseActivity
             if (!currentFragmentTag.equals(ContentContainerFragment.class.toString()))
                 return true;
         } else {
-            this.currentFragmentTag = FragmentUtils.getTagByMenuId(item.getItemId());
+            currentFragmentTag = FragmentUtils.getTagByMenuId(item.getItemId());
         }
 
         if (item.getItemId() == Constants.MENU_CONTACT_ID) {
@@ -164,9 +189,9 @@ public class MainActivity extends BaseActivity
         } else {
             if (getSupportFragmentManager().findFragmentByTag(ContentContainerFragment.class.toString()) == null)
                 addFragment(ContentContainerFragment.newInstance());
-            this.currentItem = this.items.get(this.items.indexOf(new AppContent(item.getItemId())));
-            setTitle(this.currentItem.getName());
-            ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(this.currentItem);
+            currentItem = items.get(items.indexOf(new AppContent(item.getItemId())));
+            setTitle(currentItem.getName());
+            ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(currentItem);
         }
 
         return true;
@@ -175,7 +200,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void showProgress(String title, String message) {
         hideProgress();
-        this.progressDialog = new MaterialDialog.Builder(this)
+        progressDialog = new MaterialDialog.Builder(this)
                 .title(title)
                 .content(message)
                 .progress(true, 0)
@@ -184,8 +209,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void hideProgress() {
-        if (this.progressDialog != null)
-            this.progressDialog.dismiss();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 
     @Override
@@ -199,6 +224,7 @@ public class MainActivity extends BaseActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        showProgress(null, getString(R.string.loading_msg));
                         mainPresenter.populateApp();
                     }
                 })
@@ -232,13 +258,13 @@ public class MainActivity extends BaseActivity
             AppContent item = items.get(i);
             menuIdPosition.put(item.getContent_id(), i);
             if (AppmaticUtils.getIconRes(item.getIcon_id(), this) == -1)
-                this.currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), i, item.getName());
+                currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), i, item.getName());
             else
-                this.currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), i,
+                currentNavigationViewMenu.add(R.id.main_group_menu, item.getContent_id(), i,
                         item.getName()).setIcon(AppmaticUtils.getIconRes(item.getIcon_id(), this));
         }
 
-        this.mainPresenter.getExtraItems();
+        mainPresenter.getExtraItems();
     }
 
     @Override
@@ -256,44 +282,45 @@ public class MainActivity extends BaseActivity
                 extraInfo.isNavigation_bar_colored())
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        ((TextView) this.headerView.findViewById(R.id.tv_nav_main)).setText(extraInfo.getAndroid_drawer_header_main_text());
-        ((TextView) this.headerView.findViewById(R.id.tv_nav_sub)).setText(extraInfo.getAndroid_drawer_header_sub_text());
-        this.headerView.findViewById(R.id.navigation_header_layout).setBackgroundColor(Color.parseColor(extraInfo.getAndroid_drawer_header_color()));
+        ((TextView) headerView.findViewById(R.id.tv_nav_main)).setText(extraInfo.getAndroid_drawer_header_main_text());
+        ((TextView) headerView.findViewById(R.id.tv_nav_sub)).setText(extraInfo.getAndroid_drawer_header_sub_text());
+        headerView.findViewById(R.id.navigation_header_layout).setBackgroundColor(Color.parseColor(extraInfo.getAndroid_drawer_header_color()));
 
         if (!extraInfo.getExtra_items().contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
-            menuIdPosition.put(Constants.MENU_GALLERY_ID, this.currentNavigationViewMenu.size());
-            this.currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_GALLERY_ID, this.currentNavigationViewMenu.size(),
+            menuIdPosition.put(Constants.MENU_GALLERY_ID, currentNavigationViewMenu.size());
+            currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_GALLERY_ID, currentNavigationViewMenu.size(),
                     getString(R.string.gallery)).setIcon(AppmaticUtils.getIconRes(Constants.MENU_GALLERY_ICON, this));
         }
 
         if (extraInfo.getExtra_items().contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
-            menuIdPosition.put(Constants.MENU_CONTACT_ID, this.currentNavigationViewMenu.size());
-            this.currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_CONTACT_ID, this.currentNavigationViewMenu.size(),
+            menuIdPosition.put(Constants.MENU_CONTACT_ID, currentNavigationViewMenu.size());
+            currentNavigationViewMenu.add(R.id.main_group_menu, Constants.MENU_CONTACT_ID, currentNavigationViewMenu.size(),
                     getString(R.string.contact)).setIcon(AppmaticUtils.getIconRes(Constants.MENU_CONTACT_ICON, this));
         }
 
-        this.currentNavigationViewMenu.setGroupCheckable(R.id.main_group_menu, true, true);
+        currentNavigationViewMenu.setGroupCheckable(R.id.main_group_menu, true, true);
 
         handleFirstContentState(extraInfo.getExtra_items());
 
-        this.hideProgress();
+        hideProgress();
     }
 
     @Override
     public void handleFirstContentState(ArrayList<String> extraItems) {
         try {
-            if (this.currentNavigationViewMenu.size() >= currentItemPosition &&
-                    this.currentNavigationViewMenu.size() != 0) {
+            if (currentNavigationViewMenu.size() >= currentItemPosition &&
+                    currentNavigationViewMenu.size() != 0) {
                 // Menu has changed since last update, should restart.
                 if (lastSelectedMenuId != -1 &&
                         lastSelectedMenuId != currentNavigationViewMenu.getItem(currentItemPosition).getItemId()) {
                     hideProgress();
                     shouldHandleState = false;
                     lastSelectedMenuId = -1;
+                    showProgress(null, getString(R.string.loading_msg));
                     mainPresenter.populateApp();
                     return;
                 } else {
-                    this.currentNavigationViewMenu.getItem(currentItemPosition).setChecked(true);
+                    currentNavigationViewMenu.getItem(currentItemPosition).setChecked(true);
                 }
             }
 
@@ -302,17 +329,17 @@ public class MainActivity extends BaseActivity
                 shouldHandleState = false;
             } else {
                 if (items.size() > 0) {
-                    this.currentFragmentTag = ContentContainerFragment.class.toString();
-                    this.currentItem = this.items.get(0);
-                    this.currentItemPosition = 0;
-                    setTitle(this.currentItem.getName());
+                    currentFragmentTag = ContentContainerFragment.class.toString();
+                    currentItem = items.get(0);
+                    currentItemPosition = 0;
+                    setTitle(currentItem.getName());
                     addFragment(ContentContainerFragment.newInstance());
-                    ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(this.currentItem);
+                    ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(currentItem);
                 } else if (!extraItems.contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
-                    this.currentFragmentTag = GalleryFragment.class.toString();
+                    currentFragmentTag = GalleryFragment.class.toString();
                     addFragment(GalleryFragment.newInstance());
                 } else if (extraItems.contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
-                    this.currentFragmentTag = ContentContainerFragment.class.toString();
+                    currentFragmentTag = ContentContainerFragment.class.toString();
                     addFragment(ContactFragment.newInstance());
                 }
             }
@@ -320,6 +347,7 @@ public class MainActivity extends BaseActivity
             hideProgress();
             shouldHandleState = false;
             lastSelectedMenuId = -1;
+            showProgress(null, getString(R.string.loading_msg));
             mainPresenter.populateApp();
         }
     }
@@ -327,9 +355,9 @@ public class MainActivity extends BaseActivity
     @Override
     public void restoreContent() {
         if (currentFragmentTag.equals(ContentContainerFragment.class.toString())) {
-            this.currentItem = this.items.get(currentItemPosition);
-            setTitle(this.currentItem.getName());
-            ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(this.currentItem);
+            currentItem = items.get(currentItemPosition);
+            setTitle(currentItem.getName());
+            ((ContentContainerFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentTag)).updateFragmentContents(currentItem);
         }
     }
 
@@ -371,7 +399,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.mainPresenter.onDestroy();
+        mainPresenter.onDestroy();
     }
 
     @Override
@@ -388,33 +416,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void closeDrawer() {
-        if (this.drawer.isDrawerOpen(GravityCompat.START)) {
-            this.drawer.closeDrawer(GravityCompat.START);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         }
-    }
-
-    @Override
-    protected void setListeners() {
-        this.navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    protected void setupViews() {
-        this.mainPresenter = new MainPresenterImpl(this);
-
-        setSupportActionBar(this.toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, this.drawer, this.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, 0); // this disables the hamburger to arrow animation
-            }
-
-        };
-
-        this.drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        this.currentNavigationViewMenu = this.navigationView.getMenu();
     }
 }

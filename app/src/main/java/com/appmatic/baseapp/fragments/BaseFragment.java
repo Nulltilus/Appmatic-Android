@@ -57,13 +57,13 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         if (context instanceof OnFragmentReadyListener)
-            this.onFragmentReadyListener = (OnFragmentReadyListener) context;
+            onFragmentReadyListener = (OnFragmentReadyListener) context;
         super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
-        this.onFragmentReadyListener = null;
+        onFragmentReadyListener = null;
         super.onDetach();
     }
 

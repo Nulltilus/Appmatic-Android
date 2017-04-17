@@ -22,6 +22,5 @@ package com.appmatic.baseapp.contact;
 
 interface ContactPresenter {
     void setUpData();
-
     void onDestroy();
 }

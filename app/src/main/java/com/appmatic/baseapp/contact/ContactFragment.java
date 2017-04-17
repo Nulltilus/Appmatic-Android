@@ -113,7 +113,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
         final Bundle mapViewSavedInstanceState =
                 savedInstanceState != null ? savedInstanceState.getBundle(MAP_VIEW_SAVE_STATE) : null;
         if (mapView != null)
-            this.mapView.onCreate(mapViewSavedInstanceState);
+            mapView.onCreate(mapViewSavedInstanceState);
         return view;
     }
 
@@ -121,7 +121,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ((MainActivity) getActivity()).showProgress(null, getString(R.string.loading_contact_msg));
         if (mapView != null)
-            this.mapView.getMapAsync(this);
+            mapView.getMapAsync(this);
     }
 
     @Override
@@ -132,14 +132,14 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     public void retrieveDataCall() {
         if (checkPlayServices()) {
-            this.contactPresenter.setUpData();
+            contactPresenter.setUpData();
         }
     }
 
     @Override
     public void showFullscreenMap() {
         String format = "geo:0,0?q=" + Double.toString(this.contact.getLatitude()) + "," +
-                Double.toString(this.contact.getLongitude()) + "(" + this.contact.getName() + ")";
+                Double.toString(contact.getLongitude()) + "(" + this.contact.getName() + ")";
         Uri uri = Uri.parse(format);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -153,7 +153,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     @Override
     public void performPhoneCall() {
-        Uri call = Uri.parse("tel:" + this.contact.getContact_phone());
+        Uri call = Uri.parse("tel:" + contact.getContact_phone());
         Intent intent = new Intent(Intent.ACTION_DIAL, call);
         startActivity(Intent.createChooser(intent, getString(R.string.call_with)));
     }
@@ -162,7 +162,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     public void sendEmail() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{this.contact.getContact_email()});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getContact_email()});
         if (intent.resolveActivity(getActivity().getPackageManager()) != null)
             startActivity(Intent.createChooser(intent, getString(R.string.send_email_with)));
     }
@@ -170,7 +170,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void openWebsite() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        String url = this.contact.getContact_website();
+        String url = contact.getContact_website();
         if (!url.startsWith("http"))
             url = ("http://" + contact.getContact_website());
         intent.setData(Uri.parse(url));
@@ -182,25 +182,25 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     public void populateContent(final Contact contact) {
         this.contact = contact;
         if (!contact.getContact_address().isEmpty()) {
-            this.mapView.setVisibility(View.VISIBLE);
-            this.fabFullscreenMap.setVisibility(View.VISIBLE);
-            this.contactAddressText.setText(contact.getContact_address());
+            mapView.setVisibility(View.VISIBLE);
+            fabFullscreenMap.setVisibility(View.VISIBLE);
+            contactAddressText.setText(contact.getContact_address());
 
             // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
             MapsInitializer.initialize(getActivity());
 
-            this.contactNameLayout.setOnClickListener(new View.OnClickListener() {
+            contactNameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPositionAtLocation()));
                 }
             });
 
-            this.googleMap.getUiSettings().setMapToolbarEnabled(false);
+            googleMap.getUiSettings().setMapToolbarEnabled(false);
 
             final LatLng loc = new LatLng(contact.getLatitude(), contact.getLongitude());
 
-            this.googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPositionAtLocation()), new GoogleMap.CancelableCallback() {
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPositionAtLocation()), new GoogleMap.CancelableCallback() {
                 @Override
                 public void onFinish() {
                     googleMap.addMarker(new MarkerOptions().position(loc).title(contact.getName()).snippet(contact.getContact_address()));
@@ -218,33 +218,33 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
                 }
             });
         } else {
-            this.contactPlaceholderImage.setVisibility(View.VISIBLE);
-            this.contactNameLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
-            this.contactNameLayout.setFocusable(false);
-            this.contactNameLayout.setClickable(false);
+            contactPlaceholderImage.setVisibility(View.VISIBLE);
+            contactNameLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+            contactNameLayout.setFocusable(false);
+            contactNameLayout.setClickable(false);
         }
 
         contactNameLayout.setVisibility(View.VISIBLE);
         namePhoneDivider.setVisibility(View.VISIBLE);
-        this.contactNameText.setText(contact.getName().isEmpty() ? getString(R.string.app_name) : contact.getName());
+        contactNameText.setText(contact.getName().isEmpty() ? getString(R.string.app_name) : contact.getName());
 
         if (!contact.getContact_phone().isEmpty()) {
             contactPhoneLayout.setVisibility(View.VISIBLE);
             phoneEmailDivider.setVisibility(View.VISIBLE);
-            this.contactPhoneText.setText(contact.getContact_phone());
+            contactPhoneText.setText(contact.getContact_phone());
         }
 
         if (!contact.getContact_email().isEmpty()) {
             contactEmailLayout.setVisibility(View.VISIBLE);
             emailWebsiteDivider.setVisibility(View.VISIBLE);
-            this.contactEmailText.setText(contact.getContact_email());
+            contactEmailText.setText(contact.getContact_email());
         }
 
         if (!contact.getContact_website().isEmpty()) {
             contactWebsiteLayout.setVisibility(View.VISIBLE);
             websiteEndDivider.setVisibility(View.VISIBLE);
             // There is a bug with "http(s)://" and ellipsize, we need to remove it.
-            this.contactWebsiteText.setText(contact.getContact_website().replaceFirst("(http(s)?://)?(www.)?", ""));
+            contactWebsiteText.setText(contact.getContact_website().replaceFirst("(http(s)?://)?(www.)?", ""));
         }
 
         ((MainActivity) getActivity()).hideProgress();
@@ -252,35 +252,35 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     @Override
     protected void setListeners() {
-        this.fabFullscreenMap.setOnClickListener(new View.OnClickListener() {
+        fabFullscreenMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showFullscreenMap();
             }
         });
 
-        this.contactPhoneLayout.setOnClickListener(new View.OnClickListener() {
+        contactPhoneLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 performPhoneCall();
             }
         });
 
-        this.contactEmailLayout.setOnClickListener(new View.OnClickListener() {
+        contactEmailLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendEmail();
             }
         });
 
-        this.contactWebsiteLayout.setOnClickListener(new View.OnClickListener() {
+        contactWebsiteLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openWebsite();
             }
         });
 
-        final BottomSheetBehavior behavior = BottomSheetBehavior.from(this.contactBottomSheet);
+        final BottomSheetBehavior behavior = BottomSheetBehavior.from(contactBottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -313,7 +313,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
         //This MUST be done before saving any of your own or your base class's variables
         final Bundle mapViewSaveState = new Bundle(outState);
         if (mapView != null)
-            this.mapView.onSaveInstanceState(mapViewSaveState);
+            mapView.onSaveInstanceState(mapViewSaveState);
         outState.putBundle(MAP_VIEW_SAVE_STATE, mapViewSaveState);
         //Add any other variables here.
         super.onSaveInstanceState(outState);
@@ -321,7 +321,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     @Override
     protected void setupViews() {
-        this.contactPresenter = new ContactPresenterImpl(this);
+        contactPresenter = new ContactPresenterImpl(this);
         setBottomSheetState(getResources().getConfiguration().orientation);
     }
 
@@ -329,16 +329,16 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     public void setBottomSheetState(int orientation) {
         if (!getResources().getBoolean(R.bool.tablet_mode)) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT)
-                BottomSheetBehavior.from(this.contactBottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+                BottomSheetBehavior.from(contactBottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
             else
-                BottomSheetBehavior.from(this.contactBottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+                BottomSheetBehavior.from(contactBottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
     }
 
     @Override
     public boolean collapseBottomSheet() {
-        if (BottomSheetBehavior.from(this.contactBottomSheet).getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            BottomSheetBehavior.from(this.contactBottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+        if (BottomSheetBehavior.from(contactBottomSheet).getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            BottomSheetBehavior.from(contactBottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
             return true;
         }
         return false;
@@ -372,6 +372,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ((MainActivity) getActivity()).showProgress(null, getString(R.string.loading_contact_msg));
                         retrieveDataCall();
                     }
                 })
@@ -388,23 +389,23 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.contactPresenter.onDestroy();
+        contactPresenter.onDestroy();
         if (mapView != null)
-            this.mapView.onDestroy();
+            mapView.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (mapView != null)
-            this.mapView.onResume();
+            mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         if (mapView != null)
-            this.mapView.onPause();
+            mapView.onPause();
     }
 
     @Override

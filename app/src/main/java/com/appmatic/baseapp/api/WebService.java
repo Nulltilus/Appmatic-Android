@@ -109,7 +109,7 @@ public class WebService {
     }
 
     public ApiInterface getApiInterface() {
-        return this.retrofit.create(ApiInterface.class);
+        return retrofit.create(ApiInterface.class);
     }
 
 }

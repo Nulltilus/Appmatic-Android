@@ -29,28 +29,28 @@ class ContactPresenterImpl implements ContactInteractorImpl.OnContactDataReceive
 
     ContactPresenterImpl(ContactView contactView) {
         this.contactView = contactView;
-        this.contactInteractor = new ContactInteractorImpl();
+        contactInteractor = new ContactInteractorImpl();
     }
 
     @Override
     public void setUpData() {
-        this.contactInteractor.retrieveContactData(((ContactFragment) contactView).getActivity(), this);
+        contactInteractor.retrieveContactData(((ContactFragment) contactView).getActivity(), this);
     }
 
     @Override
     public void onDestroy() {
-        this.contactView = null;
+        contactView = null;
     }
 
     @Override
     public void onContactDataReceived(Contact contact) {
-        if (this.contactView != null)
-            this.contactView.populateContent(contact);
+        if (contactView != null)
+            contactView.populateContent(contact);
     }
 
     @Override
     public void onContactDataError() {
-        if (this.contactView != null)
-            this.contactView.showErrorDialog();
+        if (contactView != null)
+            contactView.showErrorDialog();
     }
 }

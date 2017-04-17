@@ -35,17 +35,17 @@ class MainPresenterImpl implements MainPresenter, MainInteractorImpl.OnDataRetri
 
     MainPresenterImpl(MainView mainView) {
         this.mainView = mainView;
-        this.mainInteractor = new MainInteractorImpl();
+        mainInteractor = new MainInteractorImpl();
     }
 
     @Override
     public void setUpDataFromServer() {
-        this.mainInteractor.getData((Context) mainView, this);
+        mainInteractor.getData((Context) mainView, this);
     }
 
     @Override
     public void onDestroy() {
-        this.mainView = null;
+        mainView = null;
     }
 
     @Override
@@ -55,34 +55,34 @@ class MainPresenterImpl implements MainPresenter, MainInteractorImpl.OnDataRetri
 
     @Override
     public void getExtraItems() {
-        this.mainInteractor.getExtraInfo((Context) mainView, this);
+        mainInteractor.getExtraInfo((Context) mainView, this);
     }
 
     @Override
     public void onDataReceived(ArrayList<AppContent> appContents) {
-        if (this.mainView != null) {
-            this.mainView.updateAllContent(appContents);
+        if (mainView != null) {
+            mainView.updateAllContent(appContents);
         }
     }
 
     @Override
     public void onDataReceivedError() {
-        if (this.mainView != null) {
-            this.mainView.handleInternetError();
+        if (mainView != null) {
+            mainView.handleInternetError();
         }
     }
 
     @Override
     public void onExtraInfoReceived(ExtraInfo extraInfo) {
-        if (this.mainView != null) {
-            this.mainView.setUpRemainingContent(extraInfo);
+        if (mainView != null) {
+            mainView.setUpRemainingContent(extraInfo);
         }
     }
 
     @Override
     public void onExtraInfoError() {
-        if (this.mainView != null) {
-            this.mainView.handleInternetError();
+        if (mainView != null) {
+            mainView.handleInternetError();
         }
     }
 

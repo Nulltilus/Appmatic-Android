@@ -65,7 +65,7 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
 
             if (newView instanceof ImageView)
                 Glide.with(getActivity()).load(content.getContent()).into(((ImageView) newView));
-            this.contentContainer.addView(newView);
+            contentContainer.addView(newView);
         }
     }
 
@@ -95,8 +95,8 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
 
     @Override
     public void clearFragmentContents() {
-        this.contentContainer.removeAllViews();
-        this.contentScrollView.scrollTo(0, 0);
+        contentContainer.removeAllViews();
+        contentScrollView.scrollTo(0, 0);
     }
 
 }
