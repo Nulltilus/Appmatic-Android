@@ -50,11 +50,7 @@ class MainPresenterImpl implements MainPresenter, MainInteractorImpl.OnDataRetri
 
     @Override
     public void populateApp() {
-        if (this.mainView != null) {
-            this.mainView.showProgress(((Context) mainView).getResources().getString(R.string.loading),
-                    ((Context) mainView).getResources().getString(R.string.loading_msg));
-            setUpDataFromServer();
-        }
+        setUpDataFromServer();
     }
 
     @Override

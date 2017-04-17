@@ -7,8 +7,8 @@
     <string name="connection_error">Error de conexión.</string>
     <string name="connection_error_msg">Ha ocurrido un error de conexión.</string>
     <string name="loading">Cargando…</string>
-    <string name="loading_msg">Obteniendo el contenido de la aplicación.</string>
-    <string name="loading_contact_msg">Obteniendo datos de contacto.</string>
+    <string name="loading_msg">Obteniendo el contenido de la aplicación…</string>
+    <string name="loading_contact_msg">Obteniendo datos de contacto…</string>
     <string name="retry">Reintentar</string>
     <string name="exit">Salir</string>
 
@@ -27,6 +27,6 @@
     <string name="open_location_with">Abrir localización con…</string>
 
     <string name="gallery">Galería</string>
-    <string name="loading_gallery_msg">Obteniendo galería.</string>
-    <string name="gallery_transition">gallery_transition</string>
+    <string name="loading_gallery_msg">Cargando imágenes…</string>
+    <string name="image_viewer_indicator">%1$d de %2$d</string>
 </resources>

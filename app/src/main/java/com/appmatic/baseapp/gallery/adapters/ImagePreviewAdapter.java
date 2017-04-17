@@ -50,7 +50,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return object instanceof ViewHolder
-                && view.equals(((ViewHolder) object).photoView);
+                && view.equals(((ViewHolder) object).itemView);
     }
 
     @Override
@@ -82,13 +82,13 @@ public class ImagePreviewAdapter extends PagerAdapter {
                     }
                 });
 
-        container.addView(viewHolder.photoView);
+        container.addView(viewHolder.itemView);
         return viewHolder;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(((ViewHolder) object).photoView);
+        container.removeView(((ViewHolder) object).itemView);
     }
 
     private void startPostponedEnterTransition(int position) {
@@ -98,10 +98,12 @@ public class ImagePreviewAdapter extends PagerAdapter {
     }
 
     static class ViewHolder {
+        final View itemView;
         @BindView(R.id.item_image)
         PhotoView photoView;
 
         ViewHolder(View itemView) {
+            this.itemView = itemView;
             ButterKnife.bind(this, itemView);
         }
     }

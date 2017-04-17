@@ -42,7 +42,7 @@ public class ImagePreviewActivity extends BaseActivity {
         supportPostponeEnterTransition();
         GallerySharedElementCallback sharedElementCallback = new GallerySharedElementCallback();
         setEnterSharedElementCallback(sharedElementCallback);
-        setTitle((initialPosition + 1) + "/" + images.size());
+        setTitle(getString(R.string.image_viewer_indicator, initialPosition + 1, images.size()));
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         previewImagesViewpager.setAdapter(new ImagePreviewAdapter(this, images, sharedElementCallback));
@@ -91,7 +91,7 @@ public class ImagePreviewActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                setTitle((position + 1) + "/" + images.size());
+                setTitle(getString(R.string.image_viewer_indicator, position + 1, images.size()));
             }
 
             @Override

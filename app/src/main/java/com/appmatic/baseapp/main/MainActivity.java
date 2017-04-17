@@ -100,6 +100,8 @@ public class MainActivity extends BaseActivity
         setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState, R.layout.activity_main);
 
+        showProgress(null, getString(R.string.loading_msg));
+
         if (savedInstanceState != null) {
             shouldHandleState = true;
             if (savedInstanceState.containsKey(CURRENT_FRAGMENT_TAG_EXTRA))
@@ -212,6 +214,9 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void updateAllContent(ArrayList<AppContent> items) {
+        if (currentNavigationViewMenu.size() > 0)
+            currentNavigationViewMenu.clear();
+
         this.items = items;
 
         if (!InternetUtils.isInternetAvailable(this))
@@ -285,8 +290,8 @@ public class MainActivity extends BaseActivity
                     hideProgress();
                     shouldHandleState = false;
                     lastSelectedMenuId = -1;
-                    currentFragmentTag = "";
-                    ProcessPhoenix.triggerRebirth(this);
+                    mainPresenter.populateApp();
+                    return;
                 } else {
                     this.currentNavigationViewMenu.getItem(currentItemPosition).setChecked(true);
                 }
@@ -313,7 +318,9 @@ public class MainActivity extends BaseActivity
             }
         } catch (Exception genericException) {
             hideProgress();
-            ProcessPhoenix.triggerRebirth(this);
+            shouldHandleState = false;
+            lastSelectedMenuId = -1;
+            mainPresenter.populateApp();
         }
     }
 
