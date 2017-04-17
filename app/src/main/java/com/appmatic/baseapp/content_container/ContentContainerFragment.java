@@ -13,7 +13,7 @@ import com.appmatic.baseapp.R;
 import com.appmatic.baseapp.api.models.AppContent;
 import com.appmatic.baseapp.api.models.Content;
 import com.appmatic.baseapp.fragments.BaseFragment;
-import com.appmatic.baseapp.utils.AppmaticUtils;
+import com.appmatic.baseapp.utils.ViewParsingUtils;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
@@ -60,7 +60,7 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
         onFragmentReadyListener.fragmentReady();
         for (int i = 0; i < fragmentContents.getContents().size(); i++) {
             Content content = fragmentContents.getContents().get(i);
-            View newView = AppmaticUtils
+            View newView = ViewParsingUtils
                     .parseContent(getActivity(), content, i == 0, i == fragmentContents.getContents().size() - 1);
 
             if (newView instanceof ImageView)
