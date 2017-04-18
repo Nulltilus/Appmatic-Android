@@ -70,9 +70,9 @@ public abstract class BaseFragment extends Fragment {
     protected void imReady() {
         if (onFragmentReadyListener != null) {
             onFragmentReadyListener.fragmentReady();
-        } else if (getActivity() != null) {
-            if (getActivity() instanceof OnFragmentReadyListener)
-                ((OnFragmentReadyListener) getActivity()).fragmentReady();
+        } else if (getActivity() != null &&
+                getActivity() instanceof OnFragmentReadyListener) {
+            ((OnFragmentReadyListener) getActivity()).fragmentReady();
         }
     }
 

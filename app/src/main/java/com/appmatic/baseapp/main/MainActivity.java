@@ -384,8 +384,9 @@ public class MainActivity extends BaseActivity
             case R.id.menu_restart_app:
                 ProcessPhoenix.triggerRebirth(this);
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override

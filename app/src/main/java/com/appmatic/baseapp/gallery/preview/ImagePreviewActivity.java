@@ -77,8 +77,9 @@ public class ImagePreviewActivity extends BaseActivity {
             case android.R.id.home:
                 super.onBackPressed();
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
 
@@ -107,6 +108,7 @@ public class ImagePreviewActivity extends BaseActivity {
         previewImagesViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // ignored
             }
 
             @Override
@@ -116,6 +118,7 @@ public class ImagePreviewActivity extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                // ignored
             }
         });
     }

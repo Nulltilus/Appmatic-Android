@@ -141,7 +141,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
             getActivity().getWindow().getSharedElementExitTransition().addListener(new Transition.TransitionListener() {
                 @Override
                 public void onTransitionStart(Transition transition) {
-
+                    // ignored
                 }
 
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -155,17 +155,17 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
 
                 @Override
                 public void onTransitionCancel(Transition transition) {
-
+                    // ignored
                 }
 
                 @Override
                 public void onTransitionPause(Transition transition) {
-
+                    // ignored
                 }
 
                 @Override
                 public void onTransitionResume(Transition transition) {
-
+                    // ignored
                 }
             });
         }
