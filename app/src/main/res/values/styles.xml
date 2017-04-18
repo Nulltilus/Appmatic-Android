@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -28,4 +27,13 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
+    <style name="AppTheme.Preview" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/preview_bg_color</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <color name="preview_bg_color">#303030</color>
 </resources>
