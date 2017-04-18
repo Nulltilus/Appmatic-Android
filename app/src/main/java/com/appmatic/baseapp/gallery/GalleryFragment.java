@@ -87,7 +87,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
         ((MainActivity) getActivity()).showProgress(null, getString(R.string.loading_gallery_msg));
         imagesRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getBoolean(R.bool.tablet_mode) ? 3 : 2));
         imagesRecyclerView.setHasFixedSize(true);
-        onFragmentReadyListener.fragmentReady();
+        imReady();
         galleryPresenter.getImages();
     }
 

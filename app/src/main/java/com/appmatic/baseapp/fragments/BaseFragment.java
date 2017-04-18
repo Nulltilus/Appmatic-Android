@@ -33,7 +33,7 @@ import butterknife.Unbinder;
  */
 
 public abstract class BaseFragment extends Fragment {
-    protected OnFragmentReadyListener onFragmentReadyListener;
+    private OnFragmentReadyListener onFragmentReadyListener;
     private Unbinder unbinder;
 
     @Nullable
@@ -65,6 +65,15 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    protected void imReady() {
+        if (onFragmentReadyListener != null) {
+            onFragmentReadyListener.fragmentReady();
+        } else if (getActivity() != null) {
+            if (getActivity() instanceof OnFragmentReadyListener)
+                ((OnFragmentReadyListener) getActivity()).fragmentReady();
+        }
     }
 
     protected abstract void setupViews();

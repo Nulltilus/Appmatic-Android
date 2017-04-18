@@ -66,7 +66,7 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
                 Glide.with(getActivity()).load(content.getContent()).into(((ImageView) newView));
             contentContainer.addView(newView);
         }
-        onFragmentReadyListener.fragmentReady();
+        imReady();
     }
 
     public int getChildCount() {
