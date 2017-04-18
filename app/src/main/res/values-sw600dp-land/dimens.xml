@@ -1,4 +1,8 @@
 <resources>
     <dimen name="nav_drawer_width">320dp</dimen>
     <dimen name="nav_header_height">180dp</dimen>
+
+    <dimen name="gallery_item_size">256dp</dimen>
+
+    <dimen name="youtube_thumbnail">512dp</dimen>
 </resources>

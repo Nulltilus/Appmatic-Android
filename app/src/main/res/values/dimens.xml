@@ -10,4 +10,6 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="gallery_item_size">128dp</dimen>
+
+    <dimen name="youtube_thumbnail">192dp</dimen>
 </resources>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -14,7 +13,6 @@ import com.appmatic.baseapp.api.models.AppContent;
 import com.appmatic.baseapp.api.models.Content;
 import com.appmatic.baseapp.fragments.BaseFragment;
 import com.appmatic.baseapp.utils.ViewParsingUtils;
-import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 
@@ -61,9 +59,6 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
             Content content = fragmentContents.getContents().get(i);
             View newView = ViewParsingUtils
                     .parseContent(getActivity(), content, i == 0, i == fragmentContents.getContents().size() - 1);
-
-            if (newView instanceof ImageView)
-                Glide.with(getActivity()).load(content.getContent()).into(((ImageView) newView));
             contentContainer.addView(newView);
         }
         imReady();
