@@ -57,7 +57,6 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
     @Override
     public void updateFragmentContents(AppContent fragmentContents) {
         clearFragmentContents();
-        onFragmentReadyListener.fragmentReady();
         for (int i = 0; i < fragmentContents.getContents().size(); i++) {
             Content content = fragmentContents.getContents().get(i);
             View newView = ViewParsingUtils
@@ -67,6 +66,7 @@ public class ContentContainerFragment extends BaseFragment implements ContentCon
                 Glide.with(getActivity()).load(content.getContent()).into(((ImageView) newView));
             contentContainer.addView(newView);
         }
+        onFragmentReadyListener.fragmentReady();
     }
 
     public int getChildCount() {

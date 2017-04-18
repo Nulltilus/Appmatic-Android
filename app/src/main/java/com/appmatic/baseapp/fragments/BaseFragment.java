@@ -49,12 +49,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        onFragmentReadyListener.fragmentReady();
-    }
-
-    @Override
     public void onAttach(Context context) {
         if (context instanceof OnFragmentReadyListener)
             onFragmentReadyListener = (OnFragmentReadyListener) context;
@@ -78,6 +72,8 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void setListeners();
 
     public interface OnFragmentReadyListener {
+        // This should be called when the the Fragment is ready in order
+        // to hide the NavigationDrawer to avoid lag on it.
         void fragmentReady();
     }
 }

@@ -126,6 +126,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        onFragmentReadyListener.fragmentReady();
         this.googleMap = googleMap;
         retrieveDataCall();
     }
