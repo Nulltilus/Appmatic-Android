@@ -131,7 +131,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
         if (resultCode == Activity.RESULT_OK && data != null && data.hasExtra(ImagePreviewActivity.LAST_POSITION_EXTRA))
             position = data.getIntExtra(ImagePreviewActivity.LAST_POSITION_EXTRA, NO_POSITION);
 
-        if (position != RecyclerView.NO_POSITION)
+        if (position != NO_POSITION)
             imagesRecyclerView.scrollToPosition(position);
 
         sharedElementCallback = new GallerySharedElementCallback();
