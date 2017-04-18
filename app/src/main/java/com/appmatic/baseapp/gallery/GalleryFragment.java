@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
@@ -37,32 +36,31 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 /**
  * Appmatic
  * Copyright (C) 2016 - Nulltilus
- * <p>
+ *
  * This file is part of Appmatic.
- * <p>
+ *
  * Appmatic is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
- * <p>
+ *
  * Appmatic is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU General Public License
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 public class GalleryFragment extends BaseFragment implements GalleryView, GalleryAdapter.GalleryCallbacks {
+    private static final String SELECTED_GROUP_EXTRA = "SELECTED_GROUP_EXTRA";
+    private static final String LAST_TITLE_EXTRA = "LAST_TITLE_EXTRA";
     @BindView(R.id.images_recycler_view)
     RecyclerView imagesRecyclerView;
     private GalleryPresenter galleryPresenter;
     private int selectedGroup;
     private GallerySharedElementCallback sharedElementCallback;
-
-    private static final String SELECTED_GROUP_EXTRA = "SELECTED_GROUP_EXTRA";
-    private static final String LAST_TITLE_EXTRA = "LAST_TITLE_EXTRA";
 
     public static GalleryFragment newInstance() {
         return new GalleryFragment();
@@ -86,10 +84,10 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
 
     @Override
     protected void setupViews() {
-        onFragmentReadyListener.fragmentReady();
         ((MainActivity) getActivity()).showProgress(null, getString(R.string.loading_gallery_msg));
         imagesRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getBoolean(R.bool.tablet_mode) ? 3 : 2));
         imagesRecyclerView.setHasFixedSize(true);
+        onFragmentReadyListener.fragmentReady();
         galleryPresenter.getImages();
     }
 

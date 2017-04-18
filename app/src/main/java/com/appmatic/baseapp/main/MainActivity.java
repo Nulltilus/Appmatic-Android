@@ -2,7 +2,6 @@ package com.appmatic.baseapp.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +27,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.appmatic.baseapp.R;
 import com.appmatic.baseapp.activities.BaseActivity;
 import com.appmatic.baseapp.api.models.AppContent;
-import com.appmatic.baseapp.api.models.Contact;
 import com.appmatic.baseapp.api.models.ExtraInfo;
 import com.appmatic.baseapp.contact.ContactFragment;
 import com.appmatic.baseapp.content_container.ContentContainerFragment;
@@ -49,25 +46,28 @@ import butterknife.BindView;
 /**
  * Appmatic
  * Copyright (C) 2016 - Nulltilus
- * <p>
+ *
  * This file is part of Appmatic.
- * <p>
+ *
  * Appmatic is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
- * <p>
+ *
  * Appmatic is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU General Public License
  * along with Appmatic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainView, BaseFragment.OnFragmentReadyListener {
+    private static final String CURRENT_FRAGMENT_TAG_EXTRA = "CURRENT_FRAGMENT_TAG_EXTRA";
+    private static final String CURRENT_ITEM_POSITION_EXTRA = "CURRENT_ITEM_POSITION_EXTRA";
+    private static final String LAST_SELECTED_MENU_ID = "LAST_SELECTED_MENU_ID";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.drawer_layout)
@@ -75,24 +75,16 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
     private View headerView;
-
     private MainPresenter mainPresenter;
-
     private MaterialDialog progressDialog;
     private ArrayList<AppContent> items;
     private Menu currentNavigationViewMenu;
     private int lastSelectedMenuId;
-
     private AppContent currentItem;
     private int currentItemPosition;
     private String currentFragmentTag;
     private boolean shouldHandleState;
-
     private SparseIntArray menuIdPosition = new SparseIntArray();
-
-    private static final String CURRENT_FRAGMENT_TAG_EXTRA = "CURRENT_FRAGMENT_TAG_EXTRA";
-    private static final String CURRENT_ITEM_POSITION_EXTRA = "CURRENT_ITEM_POSITION_EXTRA";
-    private static final String LAST_SELECTED_MENU_ID = "LAST_SELECTED_MENU_ID";
 
     @SuppressLint("MissingSuperCall")
     @Override
