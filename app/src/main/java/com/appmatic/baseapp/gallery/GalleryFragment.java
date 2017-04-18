@@ -93,7 +93,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
 
     @Override
     protected void setListeners() {
-
+        // ignored
     }
 
     @Override

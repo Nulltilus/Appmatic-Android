@@ -215,7 +215,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
                 @Override
                 public void onCancel() {
-
+                    // ignored
                 }
             });
         } else {
@@ -292,6 +292,7 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // ignored
             }
         });
     }

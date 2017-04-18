@@ -121,12 +121,10 @@ public class ViewParsingUtils {
                 for (int i = 0; i < rows.length; i++) {
                     TableRow tableRow = new TableRow(context);
                     tableRow.setLayoutParams(rowParams);
-                    if (Arrays.asList(extras).contains(Content.EXTRA_HAS_STRIPES))
-                        if (i % 2 != 0)
-                            tableRow.setBackgroundColor(stripColor);
-                    if (Arrays.asList(extras).contains(Content.EXTRA_HAS_HEADER))
-                        if (i == 0)
-                            tableRow.setBackgroundResource(R.drawable.bottom_tablerow_border);
+                    if (Arrays.asList(extras).contains(Content.EXTRA_HAS_STRIPES) && i % 2 != 0)
+                        tableRow.setBackgroundColor(stripColor);
+                    if (Arrays.asList(extras).contains(Content.EXTRA_HAS_HEADER) && i == 0)
+                        tableRow.setBackgroundResource(R.drawable.bottom_tablerow_border);
                     String[] rowCells = rows[i].split(Content.TABLE_COLUMN_DIVIDER);
                     for (int j = 0; j < rowCells.length; j++) {
                         TextView tvCell = new TextView(context);
@@ -136,11 +134,10 @@ public class ViewParsingUtils {
                         int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
                                 context.getResources().getDisplayMetrics());
                         tvCell.setPadding(padding, i == 0 ? 0 : padding, padding, padding);
-                        if (Arrays.asList(extras).contains(Content.EXTRA_HAS_HEADER))
-                            if (i == 0) {
-                                tableRow.setBackgroundResource(R.drawable.bottom_tablerow_border);
-                                tvCell.setTypeface(null, Typeface.BOLD);
-                            }
+                        if (Arrays.asList(extras).contains(Content.EXTRA_HAS_HEADER) && i == 0) {
+                            tableRow.setBackgroundResource(R.drawable.bottom_tablerow_border);
+                            tvCell.setTypeface(null, Typeface.BOLD);
+                        }
                         if (j == rowCells.length - 1)
                             tvCell.setGravity(GravityCompat.END);
                         tableRow.addView(tvCell);
