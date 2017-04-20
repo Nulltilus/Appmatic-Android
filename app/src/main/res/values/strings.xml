@@ -17,7 +17,7 @@
     <string name="contact_email">Email</string>
     <string name="contact_website">Sitio web</string>
     <string name="contact_name">Nombre</string>
-    <string name="snackbar_cache_text">Sin conexión, mostrando copia almacenada.</string>
+    <string name="snackbar_cache_text">Sin conexión, intentando mostrando copia almacenada.</string>
     <string name="restart_app_str">Reiniciar</string>
     <string name="share_app">Compartir</string>
     <string name="share_app_text">Descarga la app de %1$s creada con la tecnología de Nulltilus en https://play.google.com/store/apps/details?id=%2$s</string>

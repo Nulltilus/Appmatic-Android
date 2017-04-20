@@ -364,28 +364,14 @@ public class ContactFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void showErrorDialog() {
-        ((MainActivity) getActivity()).hideProgress();
-        new MaterialDialog.Builder(getActivity())
-                .title(getString(R.string.connection_error))
-                .content(getString(R.string.connection_error_msg))
-                .cancelable(false)
-                .positiveText(getString(R.string.retry))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        ((MainActivity) getActivity()).showProgress(null, getString(R.string.loading_contact_msg));
-                        retrieveDataCall();
-                    }
-                })
-                .negativeText(getString(R.string.exit))
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        System.exit(0);
-                    }
-                })
-                .show();
+    public void handleInternetError() {
+        ((MainActivity) getActivity()).handleInternetError(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                ((MainActivity) getActivity()).showProgress(null, getString(R.string.loading_contact_msg));
+                retrieveDataCall();
+            }
+        });
     }
 
     @Override

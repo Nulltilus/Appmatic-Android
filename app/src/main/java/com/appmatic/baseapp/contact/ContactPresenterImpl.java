@@ -51,6 +51,6 @@ class ContactPresenterImpl implements ContactInteractorImpl.OnContactDataReceive
     @Override
     public void onContactDataError() {
         if (contactView != null)
-            contactView.showErrorDialog();
+            contactView.handleInternetError();
     }
 }

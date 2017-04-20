@@ -37,7 +37,6 @@ import retrofit2.Response;
 class MainInteractorImpl implements MainInteractor {
     @Override
     public void getData(@NonNull Context context, final OnDataRetrievedListener dataListener) {
-        //dataListener.onDataReceived(new ArrayList<>(Arrays.asList(new Gson().fromJson(appDataJson, AppContent[].class))));
         new WebService(context).getApiInterface().getAppData(Constants.APP_ID).enqueue(new Callback<ArrayList<AppContent>>() {
             @Override
             public void onResponse(Call<ArrayList<AppContent>> call, Response<ArrayList<AppContent>> response) {

@@ -27,5 +27,5 @@ import java.util.ArrayList;
 interface GalleryView {
     void setupGroups(ArrayList<GalleryGroup> groups);
 
-    void setImageError();
+    void handleInternetError();
 }

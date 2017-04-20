@@ -50,6 +50,6 @@ class GalleryPresenterImpl implements GalleryPresenter, GalleryInteractor.OnImag
 
     @Override
     public void onImagesError() {
-        galleryView.setImageError();
+        galleryView.handleInternetError();
     }
 }

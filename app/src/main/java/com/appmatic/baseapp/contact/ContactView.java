@@ -40,5 +40,5 @@ interface ContactView {
 
     CameraPosition getCameraPositionAtLocation();
 
-    void showErrorDialog();
+    void handleInternetError();
 }

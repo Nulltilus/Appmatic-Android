@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -77,6 +78,7 @@ public class MainActivity extends BaseActivity
     private View headerView;
     private MainPresenter mainPresenter;
     private MaterialDialog progressDialog;
+    private MaterialDialog errorDialog;
     private ArrayList<AppContent> items;
     private Menu currentNavigationViewMenu;
     private int lastSelectedMenuId;
@@ -206,20 +208,23 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void handleInternetError() {
+    public void handleInternetError(@Nullable MaterialDialog.SingleButtonCallback onPositiveCallback) {
         hideProgress();
-        new MaterialDialog.Builder(this)
+        if (onPositiveCallback == null) {
+            onPositiveCallback = new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    showProgress(null, getString(R.string.loading_msg));
+                    mainPresenter.populateApp();
+                }
+            };
+        }
+        errorDialog = new MaterialDialog.Builder(this)
                 .title(getString(R.string.connection_error))
                 .content(getString(R.string.connection_error_msg))
                 .cancelable(false)
                 .positiveText(getString(R.string.retry))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        showProgress(null, getString(R.string.loading_msg));
-                        mainPresenter.populateApp();
-                    }
-                })
+                .onPositive(onPositiveCallback)
                 .negativeText(getString(R.string.exit))
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -228,6 +233,12 @@ public class MainActivity extends BaseActivity
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void hideErrorDialog() {
+        if (errorDialog != null)
+            errorDialog.dismiss();
     }
 
     @Override
@@ -242,7 +253,7 @@ public class MainActivity extends BaseActivity
                     Snackbar.LENGTH_LONG).show();
 
         if (items == null) {
-            handleInternetError();
+            handleInternetError(null);
             return;
         }
 
@@ -316,7 +327,7 @@ public class MainActivity extends BaseActivity
                 }
             }
 
-            if (shouldHandleState) {
+            if (shouldHandleState && !currentFragmentTag.isEmpty()) {
                 restoreContent();
                 shouldHandleState = false;
             } else {
@@ -331,7 +342,7 @@ public class MainActivity extends BaseActivity
                     currentFragmentTag = GalleryFragment.class.toString();
                     addFragment(GalleryFragment.newInstance());
                 } else if (extraItems.contains(ExtraInfo.TYPE_CONTACT_ITEM)) {
-                    currentFragmentTag = ContentContainerFragment.class.toString();
+                    currentFragmentTag = ContactFragment.class.toString();
                     addFragment(ContactFragment.newInstance());
                 }
             }
@@ -387,6 +398,14 @@ public class MainActivity extends BaseActivity
             default:
                 return false;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Hiding dialogs to avoid leaks
+        hideProgress();
+        hideErrorDialog();
     }
 
     @Override

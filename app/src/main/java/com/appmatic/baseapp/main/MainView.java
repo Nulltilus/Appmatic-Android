@@ -1,7 +1,9 @@
 package com.appmatic.baseapp.main;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.appmatic.baseapp.api.models.AppContent;
 import com.appmatic.baseapp.api.models.ExtraInfo;
 
@@ -32,7 +34,9 @@ interface MainView {
 
     void hideProgress();
 
-    void handleInternetError();
+    void handleInternetError(@Nullable MaterialDialog.SingleButtonCallback onPositiveCallback);
+
+    void hideErrorDialog();
 
     void updateAllContent(ArrayList<AppContent> appContents);
 
