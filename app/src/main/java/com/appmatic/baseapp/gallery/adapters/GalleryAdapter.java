@@ -52,9 +52,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
             final GalleryGroup galleryGroup = groups.get(position);
-            Glide.with(((GroupViewHolder) holder).groupImage.getContext())
-                    .load(galleryGroup.getImages().get(0).getUrl())
-                    .into(((GroupViewHolder) holder).groupImage);
+            if (galleryGroup.getImages().size() > 0)
+                Glide.with(((GroupViewHolder) holder).groupImage.getContext())
+                        .load(galleryGroup.getImages().get(0).getUrl())
+                        .into(((GroupViewHolder) holder).groupImage);
             ((GroupViewHolder) holder).groupTitle.setText(galleryGroup.getTitle());
         } else if (holder instanceof ImageViewHolder) {
             final GalleryGroup.Image image = groups.get(selectedGroupPosition).getImages().get(position);
