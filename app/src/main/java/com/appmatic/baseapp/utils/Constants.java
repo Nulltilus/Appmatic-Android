@@ -24,8 +24,8 @@ public class Constants {
     public static final String APP_ID = "0";
     public static final String FCM_TOPIC = "TOPIC_" + APP_ID;
 
-    //public static final String BASE_URL = "https://cpanel.appmatic.nulltilus.com/";
-    public static final String BASE_URL = "http://cpanel.appmatic.sprueba.tk/";
+    public static final String BASE_URL = "https://cpanel.appmatic.nulltilus.com/";
+    // public static final String BASE_URL = "http://cpanel.appmatic.sprueba.tk/";
     public static final String API_URL = BASE_URL + "api/";
 
     public static final String APP_DATA_ENDPOINT = "get_app_content";

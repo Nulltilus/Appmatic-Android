@@ -1,12 +1,7 @@
 package com.appmatic.baseapp.main;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.appmatic.baseapp.R;
 import com.appmatic.baseapp.api.models.AppContent;
 import com.appmatic.baseapp.api.models.ExtraInfo;
 

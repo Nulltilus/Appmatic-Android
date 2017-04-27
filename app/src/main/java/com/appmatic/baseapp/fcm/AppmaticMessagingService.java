@@ -47,6 +47,14 @@ public class AppmaticMessagingService extends FirebaseMessagingService {
     private static int notificationCount = 0;
 
     @Override
+    public void handleIntent(Intent intent) {
+        try {
+            super.handleIntent(intent);
+        } catch (AbstractMethodError ignored) {
+        }
+    }
+
+    @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
