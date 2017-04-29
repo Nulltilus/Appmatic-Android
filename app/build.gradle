@@ -29,7 +29,6 @@ ext {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:support-v13:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
