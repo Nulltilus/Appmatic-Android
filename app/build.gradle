@@ -8,8 +8,8 @@ android {
         applicationId "com.appmatic.baseapp"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 930
-        versionName "0.9.3.0"
+        versionCode 931
+        versionName "0.9.3.1"
     }
 
     buildTypes {
@@ -24,7 +24,7 @@ ext {
     supportLibraryVersion = '25.3.1'
     butterKnifeversion = '8.5.1'
     retrofitVersion = '2.2.0'
-    playServicesVersion = '10.2.1'
+    playServicesVersion = '10.2.4'
 }
 
 dependencies {
