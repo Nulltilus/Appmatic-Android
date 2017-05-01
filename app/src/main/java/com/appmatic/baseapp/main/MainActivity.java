@@ -69,12 +69,9 @@ public class MainActivity extends BaseActivity
     private static final String CURRENT_FRAGMENT_TAG_EXTRA = "CURRENT_FRAGMENT_TAG_EXTRA";
     private static final String CURRENT_ITEM_POSITION_EXTRA = "CURRENT_ITEM_POSITION_EXTRA";
     private static final String LAST_SELECTED_MENU_ID = "LAST_SELECTED_MENU_ID";
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
-    @BindView(R.id.nav_view)
-    NavigationView navigationView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.nav_view) NavigationView navigationView;
     private View headerView;
     private MainPresenter mainPresenter;
     private MaterialDialog progressDialog;

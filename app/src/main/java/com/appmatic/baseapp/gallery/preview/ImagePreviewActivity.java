@@ -43,8 +43,7 @@ public class ImagePreviewActivity extends BaseActivity {
     public static final String PREVIEW_IMAGES_EXTRA = "PREVIEW_IMAGES_EXTRA";
     public static final String INITIAL_POSITION_EXTRA = "INITIAL_POSITION_EXTRA";
     public static final String LAST_POSITION_EXTRA = "LAST_POSITION_EXTRA";
-    @BindView(R.id.preview_images_viewpager)
-    ExceptionFreeViewPager previewImagesViewpager;
+    @BindView(R.id.preview_images_viewpager) ExceptionFreeViewPager previewImagesViewpager;
     private ArrayList<GalleryGroup.Image> images;
     private int initialPosition;
 

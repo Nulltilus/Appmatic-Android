@@ -61,42 +61,24 @@ import butterknife.BindView;
 
 public class ContactFragment extends BaseFragment implements OnMapReadyCallback, ContactView {
     private static final String MAP_VIEW_SAVE_STATE = "MAP_VIEW_SAVE_STATE";
-    @BindView(R.id.contact_coordinator_layout)
-    CoordinatorLayout contactCoordinatorLayout;
-    @BindView(R.id.fab_fullscreen_map)
-    FloatingActionButton fabFullscreenMap;
-    @BindView(R.id.map_view)
-    MapView mapView;
-    @BindView(R.id.contact_placeholder_image)
-    ImageView contactPlaceholderImage;
-    @BindView(R.id.contact_name_layout)
-    LinearLayout contactNameLayout;
-    @BindView(R.id.contact_phone_layout)
-    LinearLayout contactPhoneLayout;
-    @BindView(R.id.contact_email_layout)
-    LinearLayout contactEmailLayout;
-    @BindView(R.id.contact_website_layout)
-    LinearLayout contactWebsiteLayout;
-    @BindView(R.id.contact_bottomsheet)
-    ScrollView contactBottomSheet;
-    @BindView(R.id.contact_name_text)
-    TextView contactNameText;
-    @BindView(R.id.contact_address_text)
-    TextView contactAddressText;
-    @BindView(R.id.contact_phone_text)
-    TextView contactPhoneText;
-    @BindView(R.id.contact_email_text)
-    TextView contactEmailText;
-    @BindView(R.id.contact_website_text)
-    TextView contactWebsiteText;
-    @BindView(R.id.name_phone_divider)
-    View namePhoneDivider;
-    @BindView(R.id.phone_email_divider)
-    View phoneEmailDivider;
-    @BindView(R.id.email_website_divider)
-    View emailWebsiteDivider;
-    @BindView(R.id.website_end_divider)
-    View websiteEndDivider;
+    @BindView(R.id.contact_coordinator_layout) CoordinatorLayout contactCoordinatorLayout;
+    @BindView(R.id.fab_fullscreen_map) FloatingActionButton fabFullscreenMap;
+    @BindView(R.id.map_view) MapView mapView;
+    @BindView(R.id.contact_placeholder_image) ImageView contactPlaceholderImage;
+    @BindView(R.id.contact_name_layout) LinearLayout contactNameLayout;
+    @BindView(R.id.contact_phone_layout) LinearLayout contactPhoneLayout;
+    @BindView(R.id.contact_email_layout) LinearLayout contactEmailLayout;
+    @BindView(R.id.contact_website_layout) LinearLayout contactWebsiteLayout;
+    @BindView(R.id.contact_bottomsheet) ScrollView contactBottomSheet;
+    @BindView(R.id.contact_name_text) TextView contactNameText;
+    @BindView(R.id.contact_address_text) TextView contactAddressText;
+    @BindView(R.id.contact_phone_text) TextView contactPhoneText;
+    @BindView(R.id.contact_email_text) TextView contactEmailText;
+    @BindView(R.id.contact_website_text) TextView contactWebsiteText;
+    @BindView(R.id.name_phone_divider) View namePhoneDivider;
+    @BindView(R.id.phone_email_divider) View phoneEmailDivider;
+    @BindView(R.id.email_website_divider) View emailWebsiteDivider;
+    @BindView(R.id.website_end_divider) View websiteEndDivider;
     private GoogleMap googleMap;
     private ContactPresenter contactPresenter;
     private Contact contact;

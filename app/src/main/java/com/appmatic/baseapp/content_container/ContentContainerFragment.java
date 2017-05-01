@@ -37,10 +37,8 @@ import butterknife.BindView;
  */
 
 public class ContentContainerFragment extends BaseFragment implements ContentContainerView {
-    @BindView(R.id.content_container_layout)
-    LinearLayout contentContainer;
-    @BindView(R.id.content_scrollview)
-    ScrollView contentScrollView;
+    @BindView(R.id.content_container_layout) LinearLayout contentContainer;
+    @BindView(R.id.content_scrollview) ScrollView contentScrollView;
 
     public static ContentContainerFragment newInstance() {
         return new ContentContainerFragment();

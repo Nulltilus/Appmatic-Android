@@ -56,8 +56,7 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 public class GalleryFragment extends BaseFragment implements GalleryView, GalleryAdapter.GalleryCallbacks {
     private static final String SELECTED_GROUP_EXTRA = "SELECTED_GROUP_EXTRA";
     private static final String LAST_TITLE_EXTRA = "LAST_TITLE_EXTRA";
-    @BindView(R.id.images_recycler_view)
-    RecyclerView imagesRecyclerView;
+    @BindView(R.id.images_recycler_view) RecyclerView imagesRecyclerView;
     private GalleryPresenter galleryPresenter;
     private int selectedGroup;
     private GallerySharedElementCallback sharedElementCallback;
