@@ -48,5 +48,7 @@ interface MainView {
 
     void addFragment(Fragment fragmentToAdd);
 
+    void preLoadGoogleMaps();
+
     void closeDrawer();
 }

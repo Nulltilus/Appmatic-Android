@@ -28,22 +28,5 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        preLoadGoogleMaps();
-    }
-
-    // As seen in http://stackoverflow.com/a/29246677
-    public void preLoadGoogleMaps() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    MapView mv = new MapView(getApplicationContext());
-                    mv.onCreate(null);
-                    mv.onPause();
-                    mv.onDestroy();
-                } catch (Exception ignored) {
-                }
-            }
-        }).start();
     }
 }

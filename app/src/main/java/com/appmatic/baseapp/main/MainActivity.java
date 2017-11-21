@@ -38,6 +38,7 @@ import com.appmatic.baseapp.utils.AppmaticUtils;
 import com.appmatic.baseapp.utils.Constants;
 import com.appmatic.baseapp.utils.FragmentUtils;
 import com.appmatic.baseapp.utils.InternetUtils;
+import com.google.android.gms.maps.MapView;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import java.util.ArrayList;
@@ -116,6 +117,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void setupViews() {
+        preLoadGoogleMaps();
+
         mainPresenter = new MainPresenterImpl(this);
 
         setSupportActionBar(toolbar);
@@ -367,6 +370,23 @@ public class MainActivity extends BaseActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragmentToAdd, currentFragmentTag)
                 .commitNowAllowingStateLoss();
+    }
+
+    // As seen in http://stackoverflow.com/a/29246677
+    @Override
+    public void preLoadGoogleMaps() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MapView mv = new MapView(getApplicationContext());
+                    mv.onCreate(null);
+                    mv.onPause();
+                    mv.onDestroy();
+                } catch (Exception ignored) {
+                }
+            }
+        }).start();
     }
 
 
