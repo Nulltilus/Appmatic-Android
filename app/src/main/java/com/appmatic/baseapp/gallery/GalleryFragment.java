@@ -60,6 +60,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
     private GalleryPresenter galleryPresenter;
     private int selectedGroup;
     private GallerySharedElementCallback sharedElementCallback;
+    private boolean imageAlreadyClicked = false;
 
     public static GalleryFragment newInstance() {
         return new GalleryFragment();
@@ -107,18 +108,22 @@ public class GalleryFragment extends BaseFragment implements GalleryView, Galler
         Intent previewActivityIntent = new Intent(getActivity(), ImagePreviewActivity.class);
         previewActivityIntent.putParcelableArrayListExtra(ImagePreviewActivity.PREVIEW_IMAGES_EXTRA, images);
         previewActivityIntent.putExtra(ImagePreviewActivity.INITIAL_POSITION_EXTRA, position);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            GalleryAdapter.ImageViewHolder imageViewHolder =
-                    (GalleryAdapter.ImageViewHolder) imagesRecyclerView.findViewHolderForAdapterPosition(position);
-            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(getActivity(), imageViewHolder.itemImage, images.get(position).getUrl());
-            ActivityCompat.startActivity(getActivity(), previewActivityIntent, activityOptionsCompat.toBundle());
-        } else {
-            startActivity(previewActivityIntent);
+        if (!imageAlreadyClicked) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                GalleryAdapter.ImageViewHolder imageViewHolder =
+                        (GalleryAdapter.ImageViewHolder) imagesRecyclerView.findViewHolderForAdapterPosition(position);
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(getActivity(), imageViewHolder.itemImage, images.get(position).getUrl());
+                ActivityCompat.startActivity(getActivity(), previewActivityIntent, activityOptionsCompat.toBundle());
+            } else {
+                startActivity(previewActivityIntent);
+            }
+            imageAlreadyClicked = true;
         }
     }
 
     public void onActivityReenter(int resultCode, Intent data) {
+        imageAlreadyClicked = false;
         if (imagesRecyclerView == null && getActivity() != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 getActivity().getWindow().getSharedElementExitTransition().addListener(null);
