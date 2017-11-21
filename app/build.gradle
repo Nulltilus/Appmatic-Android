@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.appmatic.baseapp"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 931
-        versionName "0.9.3.1"
+        targetSdkVersion 27
+        versionCode 932
+        versionName "0.9.3.2"
     }
 
     buildTypes {
@@ -21,10 +21,10 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '27.0.1'
     butterKnifeversion = '8.5.1'
     retrofitVersion = '2.2.0'
-    playServicesVersion = '10.2.4'
+    playServicesVersion = '11.6.0'
 }
 
 dependencies {
@@ -43,7 +43,7 @@ dependencies {
     compile 'com.jakewharton:process-phoenix:2.0.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.3'
     compile 'com.pixplicity.htmlcompat:library:1.0.0'
-    compile 'com.github.chrisbanes:PhotoView:2.0.0'
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
     testCompile 'junit:junit:4.12'
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeversion"
 }
