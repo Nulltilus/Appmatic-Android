@@ -21,7 +21,7 @@ package com.appmatic.baseapp.utils;
  */
 
 public class Constants {
-    public static final String APP_ID = "0";
+    public static final String APP_ID = "2";
     public static final String FCM_TOPIC = "TOPIC_" + APP_ID;
 
     public static final String BASE_URL = "https://cpanel.appmatic.nulltilus.com/";
