@@ -287,7 +287,8 @@ public class MainActivity extends BaseActivity
 
         ((TextView) headerView.findViewById(R.id.tv_nav_main)).setText(extraInfo.getAndroid_drawer_header_main_text());
         ((TextView) headerView.findViewById(R.id.tv_nav_sub)).setText(extraInfo.getAndroid_drawer_header_sub_text());
-        headerView.findViewById(R.id.navigation_header_layout).setBackgroundColor(Color.parseColor(extraInfo.getAndroid_drawer_header_color()));
+        if (!extraInfo.getAndroid_drawer_header_color().isEmpty())
+            headerView.findViewById(R.id.navigation_header_layout).setBackgroundColor(Color.parseColor(extraInfo.getAndroid_drawer_header_color()));
 
         if (extraInfo.getExtra_items().contains(ExtraInfo.TYPE_GALLERY_ITEM)) {
             menuIdPosition.put(Constants.MENU_GALLERY_ID, currentNavigationViewMenu.size());

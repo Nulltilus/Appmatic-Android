@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -90,11 +91,11 @@ public class ViewParsingUtils {
         typedArray.recycle();
 
         if (isFirstView)
-            setViewMargins(separator, 0, defaultMargin, 0, halfMargin);
+            setLinearViewMargins(separator, 0, defaultMargin, 0, halfMargin);
         else if (isLastView)
-            setViewMargins(separator, 0, halfMargin, 0, defaultMargin);
+            setLinearViewMargins(separator, 0, halfMargin, 0, defaultMargin);
         else
-            setViewMargins(separator, 0, halfMargin, 0, halfMargin);
+            setLinearViewMargins(separator, 0, halfMargin, 0, halfMargin);
 
         return separator;
     }
@@ -110,11 +111,11 @@ public class ViewParsingUtils {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         if (isFirstView)
-            setViewMargins(textView, defaultMargin, defaultMargin, defaultMargin, halfMargin);
+            setLinearViewMargins(textView, defaultMargin, defaultMargin, defaultMargin, halfMargin);
         else if (isLastView)
-            setViewMargins(textView, defaultMargin, halfMargin, defaultMargin, defaultMargin);
+            setLinearViewMargins(textView, defaultMargin, halfMargin, defaultMargin, defaultMargin);
         else
-            setViewMargins(textView, defaultMargin, halfMargin, defaultMargin, halfMargin);
+            setLinearViewMargins(textView, defaultMargin, halfMargin, defaultMargin, halfMargin);
 
         return textView;
     }
@@ -133,27 +134,31 @@ public class ViewParsingUtils {
                 .into(image);
 
         if (isFirstView && isLastView)
-            setViewMargins(image, 0, 0, 0, 0);
+            setLinearViewMargins(image, 0, 0, 0, 0);
         if (isFirstView)
-            setViewMargins(image, 0, 0, 0, halfMargin);
+            setLinearViewMargins(image, 0, 0, 0, halfMargin);
         else if (isLastView)
-            setViewMargins(image, 0, halfMargin, 0, 0);
+            setLinearViewMargins(image, 0, halfMargin, 0, 0);
         else
-            setViewMargins(image, 0, halfMargin, 0, halfMargin);
+            setLinearViewMargins(image, 0, halfMargin, 0, halfMargin);
 
         return image;
     }
 
-    private static TableLayout inflateTable(Context context, String tableContent, String[] extras,
-                                            boolean isFirstView, boolean isLastView) {
+    private static HorizontalScrollView inflateTable(Context context, String tableContent, String[] extras,
+                                                     boolean isFirstView, boolean isLastView) {
+        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
         TableLayout tableLayout = new TableLayout(context);
         String[] rows = tableContent.split(Content.TABLE_ROW_DIVIDER);
         int primaryColor = ContextCompat.getColor(context, R.color.colorPrimary);
         int stripColor = Color.argb(35, Color.red(primaryColor), Color.green(primaryColor), Color.blue(primaryColor));
+        HorizontalScrollView.LayoutParams horizontalScrollViewParams = new HorizontalScrollView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
+        horizontalScrollView.setLayoutParams(horizontalScrollViewParams);
         tableLayout.setLayoutParams(tableParams);
         tableLayout.setStretchAllColumns(true);
         for (int i = 0; i < rows.length; i++) {
@@ -167,7 +172,7 @@ public class ViewParsingUtils {
             for (int j = 0; j < rowCells.length; j++) {
                 TextView tvCell = new TextView(context);
                 tvCell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
-                tvCell.setText(rowCells[j]);
+                tvCell.setText(HtmlCompat.fromHtml(context, rowCells[j], 0));
                 tvCell.setTextColor(ContextCompat.getColor(context, R.color.mainTextColor));
                 int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
                         context.getResources().getDisplayMetrics());
@@ -176,7 +181,7 @@ public class ViewParsingUtils {
                     tableRow.setBackgroundResource(R.drawable.bottom_tablerow_border);
                     tvCell.setTypeface(null, Typeface.BOLD);
                 }
-                if (j == rowCells.length - 1)
+                if (j == rowCells.length - 1 && rowCells.length > 1)
                     tvCell.setGravity(GravityCompat.END);
                 tableRow.addView(tvCell);
             }
@@ -184,15 +189,16 @@ public class ViewParsingUtils {
         }
 
         if (isFirstView && isLastView)
-            setViewMargins(tableLayout, 0, defaultMargin, 0, 0);
+            setFrameViewMargins(horizontalScrollView, 0, defaultMargin, 0, 0);
         else if (isFirstView)
-            setViewMargins(tableLayout, 0, defaultMargin, 0, halfMargin);
+            setFrameViewMargins(horizontalScrollView, 0, defaultMargin, 0, halfMargin);
         else if (isLastView)
-            setViewMargins(tableLayout, 0, halfMargin, 0, 0);
+            setFrameViewMargins(horizontalScrollView, 0, halfMargin, 0, 0);
         else
-            setViewMargins(tableLayout, 0, halfMargin, 0, halfMargin);
+            setFrameViewMargins(horizontalScrollView, 0, halfMargin, 0, halfMargin);
 
-        return tableLayout;
+        horizontalScrollView.addView(tableLayout);
+        return horizontalScrollView;
     }
 
     private static TextView inflateTitle(Context context, String title, boolean isFirstView, boolean isLastView) {
@@ -205,11 +211,11 @@ public class ViewParsingUtils {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         if (isFirstView)
-            setViewMargins(titleTextView, defaultMargin, defaultMargin, defaultMargin, halfMargin);
+            setLinearViewMargins(titleTextView, defaultMargin, defaultMargin, defaultMargin, halfMargin);
         else if (isLastView)
-            setViewMargins(titleTextView, defaultMargin, halfMargin, defaultMargin, defaultMargin);
+            setLinearViewMargins(titleTextView, defaultMargin, halfMargin, defaultMargin, defaultMargin);
         else
-            setViewMargins(titleTextView, defaultMargin, halfMargin, defaultMargin, halfMargin);
+            setLinearViewMargins(titleTextView, defaultMargin, halfMargin, defaultMargin, halfMargin);
 
         return titleTextView;
     }
@@ -281,8 +287,12 @@ public class ViewParsingUtils {
         return videoLayout;
     }
 
-    private static void setViewMargins(View view, int start, int top, int end, int bottom) {
+    private static void setLinearViewMargins(View view, int start, int top, int end, int bottom) {
         ((LinearLayout.LayoutParams) view.getLayoutParams()).setMargins(start, top, end, bottom);
+    }
+
+    private static void setFrameViewMargins(View view, int start, int top, int end, int bottom) {
+        ((FrameLayout.LayoutParams) view.getLayoutParams()).setMargins(start, top, end, bottom);
     }
 
     private static LinearLayout.LayoutParams injectFrameLayoutMargins(LinearLayout.LayoutParams layoutParams,
